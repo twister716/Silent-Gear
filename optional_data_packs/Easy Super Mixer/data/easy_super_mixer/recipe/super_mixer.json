@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "item": "minecraft:dirt"
+    },
+    "/": {
+      "item": "minecraft:wooden_shovel"
+    }
+  },
+  "pattern": [
+    " / ",
+    "###"
+  ],
+  "result": {
+    "components": {
+      "minecraft:lore": [
+        "\"Recipe by Easy Super Mixer data pack\"",
+        "\"Legacy Mixing Bros\""
+      ]
+    },
+    "count": 1,
+    "id": "silentgear:super_mixer"
+  }
+}
