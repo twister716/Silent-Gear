@@ -3,6 +3,10 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.21.1-4.0.7] - Unreleased
+### Fixed
+- Mod Kit causing a crash when used [#729]
+
 ## [1.21.1-4.0.6] - 2024-10-20
 ### Added
 - `silentgear:attach_data_components` trait effect type. Allows a components patch to be applied to an item.

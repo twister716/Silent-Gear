@@ -491,12 +491,13 @@ public final class GearData {
 
     public static boolean removeFirstPartOfType(ItemStack gear, PartType type) {
         PartList parts = getConstruction(gear).parts();
+        List<PartInstance> partsMutable = new ArrayList<>(parts);
         List<PartInstance> partsOfType = new ArrayList<>(parts.getPartsOfType(type));
 
         if (!partsOfType.isEmpty()) {
             PartInstance removed = partsOfType.removeFirst();
-            parts.remove(removed);
-            writeConstructionParts(gear, parts);
+            partsMutable.remove(removed);
+            writeConstructionParts(gear, partsMutable);
             removed.onRemoveFromGear(gear);
             return true;
         }
