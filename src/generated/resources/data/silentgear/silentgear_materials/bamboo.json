@@ -45,6 +45,7 @@
       "harvest_speed": 2.0,
       "harvest_tier": {
         "incorrect_blocks_for_tool": "silentgear:incorrect_for_bamboo_tools",
+        "level_hint": "0",
         "name": "bamboo"
       },
       "magic_armor": 2.0,

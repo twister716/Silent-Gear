@@ -42,6 +42,7 @@
       "harvest_speed": 2.0,
       "harvest_tier": {
         "incorrect_blocks_for_tool": "silentgear:incorrect_for_netherwood_tools",
+        "level_hint": "0",
         "name": "netherwood"
       },
       "magic_armor": 6.0,

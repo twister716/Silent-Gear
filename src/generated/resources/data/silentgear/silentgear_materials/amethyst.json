@@ -38,6 +38,7 @@
       "harvest_speed": 6.0,
       "harvest_tier": {
         "incorrect_blocks_for_tool": "silentgear:incorrect_for_amethyst_tools",
+        "level_hint": "1.5",
         "name": "amethyst"
       },
       "magic_armor": 10.0,
@@ -72,6 +73,11 @@
       "durability": {
         "operation": "MULTIPLY_TOTAL",
         "value": -0.25
+      },
+      "harvest_tier": {
+        "incorrect_blocks_for_tool": "silentgear:incorrect_for_amethyst_tools",
+        "level_hint": "1.5",
+        "name": "amethyst"
       },
       "traits": [
         {

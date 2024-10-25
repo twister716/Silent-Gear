@@ -4,9 +4,9 @@ import com.google.common.collect.Sets;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.contents.PlainTextContents;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
@@ -726,6 +726,7 @@ public final class GearHelper {
     }
 
     public static Component getDisplayName(ItemStack gear) {
+        // TODO: cache with a data component in 1.21.2
         var data = GearData.getConstruction(gear);
         var part = data.getPrimaryPart();
         if (part == null) return Component.translatable(gear.getDescriptionId());
@@ -737,8 +738,7 @@ public final class GearHelper {
         Component gearName = Component.translatable(gear.getDescriptionId() + ".nameProper", partName);
         Component result = gearName;
 
-        if (gear.getItem() instanceof GearTool) {
-            GearItem item = (GearItem) gear.getItem();
+        if (gear.getItem() instanceof GearTool item) {
             if (item.requiresPartOfType(PartTypes.ROD.get()) && GearData.getPartOfType(gear, PartTypes.ROD.get()) == null) {
                 result = Component.translatable(gear.getDescriptionId() + ".noRod", gearName);
             } else if (item.requiresPartOfType(PartTypes.CORD.get()) && GearData.getPartOfType(gear, PartTypes.CORD.get()) == null) {
@@ -748,7 +748,9 @@ public final class GearHelper {
 
         // Prefixes
         for (Component t : getNamePrefixes(gear, data.parts())) {
-            result = t.copy().append(result);
+            if (t.getContents() != PlainTextContents.EMPTY) {
+                result = t.copy().append(TextUtil.misc("space")).append(result);
+            }
         }
 
         return result;

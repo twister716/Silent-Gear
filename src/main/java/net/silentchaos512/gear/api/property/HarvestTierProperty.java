@@ -74,11 +74,11 @@ public class HarvestTierProperty extends GearProperty<HarvestTier, HarvestTierPr
 
     @Override
     public Component formatValue(HarvestTierPropertyValue value) {
-        return Component.literal(value.value.name());
+        return value.value.getFormattedName();
     }
 
     @Override
     public MutableComponent formatValueWithColor(HarvestTierPropertyValue value, boolean addColor) {
-        return Component.literal(value.value.name());
+        return value.value.getFormattedName().plainCopy();
     }
 }

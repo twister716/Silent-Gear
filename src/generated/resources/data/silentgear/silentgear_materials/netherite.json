@@ -55,6 +55,11 @@
         "operation": "MULTIPLY_TOTAL",
         "value": 0.125
       },
+      "harvest_tier": {
+        "incorrect_blocks_for_tool": "minecraft:incorrect_for_netherite_tool",
+        "level_hint": "4",
+        "name": "netherite"
+      },
       "knockback_resistance": {
         "operation": "ADD",
         "value": 1.0

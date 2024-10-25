@@ -38,6 +38,7 @@
       "harvest_speed": 5.0,
       "harvest_tier": {
         "incorrect_blocks_for_tool": "silentgear:incorrect_for_lapis_lazuli_tools",
+        "level_hint": "1.5",
         "name": "lapis_lazuli"
       },
       "magic_armor": 10.0,
@@ -69,6 +70,11 @@
       "harvest_speed": {
         "operation": "MULTIPLY_TOTAL",
         "value": -0.1
+      },
+      "harvest_tier": {
+        "incorrect_blocks_for_tool": "silentgear:incorrect_for_lapis_lazuli_tools",
+        "level_hint": "1.5",
+        "name": "lapis_lazuli"
       },
       "magic_damage": {
         "operation": "ADD",

@@ -39,6 +39,7 @@
       "harvest_speed": 7.0,
       "harvest_tier": {
         "incorrect_blocks_for_tool": "silentgear:incorrect_for_end_stone_tools",
+        "level_hint": "1",
         "name": "end_stone"
       },
       "magic_armor": 6.0,

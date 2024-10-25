@@ -39,6 +39,7 @@
       "harvest_speed": 6.0,
       "harvest_tier": {
         "incorrect_blocks_for_tool": "silentgear:incorrect_for_obsidian_tools",
+        "level_hint": "1",
         "name": "obsidian"
       },
       "magic_armor": 8.0,

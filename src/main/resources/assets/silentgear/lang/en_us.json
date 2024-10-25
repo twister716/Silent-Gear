@@ -776,6 +776,7 @@
   "misc.silentgear.off": "Off",
   "misc.silentgear.on": "On",
   "misc.silentgear.poorlyMade": "This item is poorly made and will not last long",
+  "misc.silentgear.space": " ",
   "misc.silentgear.spaceBrackets": " (%s)",
   "misc.silentgear.starlightChargerCataylst": "Starlight Charger Catalyst (Tier %d)",
   "misc.silentgear.supportedPartTypes": "Parts/upgrades supported by item",

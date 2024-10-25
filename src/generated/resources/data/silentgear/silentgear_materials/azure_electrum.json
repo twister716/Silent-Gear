@@ -39,6 +39,7 @@
       "harvest_speed": 29.0,
       "harvest_tier": {
         "incorrect_blocks_for_tool": "silentgear:incorrect_for_azure_electrum_tools",
+        "level_hint": "4",
         "name": "azure_electrum"
       },
       "magic_armor": 19.0,
@@ -115,6 +116,11 @@
       "harvest_speed": {
         "operation": "ADD",
         "value": 5.0
+      },
+      "harvest_tier": {
+        "incorrect_blocks_for_tool": "silentgear:incorrect_for_azure_electrum_tools",
+        "level_hint": "4",
+        "name": "azure_electrum"
       },
       "traits": [
         {

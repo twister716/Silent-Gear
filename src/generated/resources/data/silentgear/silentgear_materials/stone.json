@@ -44,6 +44,7 @@
       "harvest_speed": 4.0,
       "harvest_tier": {
         "incorrect_blocks_for_tool": "silentgear:incorrect_for_stone_tools",
+        "level_hint": "1",
         "name": "stone"
       },
       "projectile_accuracy": 0.8,

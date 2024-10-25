@@ -39,6 +39,7 @@
       "harvest_speed": 13.0,
       "harvest_tier": {
         "incorrect_blocks_for_tool": "minecraft:incorrect_for_diamond_tool",
+        "level_hint": "3",
         "name": "diamond"
       },
       "magic_armor": 4.0,

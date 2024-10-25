@@ -38,6 +38,7 @@
       "harvest_speed": 4.0,
       "harvest_tier": {
         "incorrect_blocks_for_tool": "minecraft:incorrect_for_iron_tool",
+        "level_hint": "2",
         "name": "iron"
       },
       "magic_armor": 4.0,

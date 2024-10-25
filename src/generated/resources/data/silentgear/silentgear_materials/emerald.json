@@ -40,6 +40,7 @@
       "harvest_speed": 10.0,
       "harvest_tier": {
         "incorrect_blocks_for_tool": "silentgear:incorrect_for_emerald_tools",
+        "level_hint": "2",
         "name": "emerald"
       },
       "magic_armor": 6.0,
@@ -105,6 +106,11 @@
       "harvest_speed": {
         "operation": "ADD",
         "value": 2.0
+      },
+      "harvest_tier": {
+        "incorrect_blocks_for_tool": "silentgear:incorrect_for_emerald_tools",
+        "level_hint": "2",
+        "name": "emerald"
       },
       "magic_damage": {
         "operation": "ADD",

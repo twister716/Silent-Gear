@@ -40,6 +40,7 @@
       "harvest_speed": 8.0,
       "harvest_tier": {
         "incorrect_blocks_for_tool": "silentgear:incorrect_for_diamond_tools",
+        "level_hint": "3",
         "name": "diamond"
       },
       "magic_armor": 4.0,
@@ -128,6 +129,11 @@
       "harvest_speed": {
         "operation": "ADD",
         "value": 2.0
+      },
+      "harvest_tier": {
+        "incorrect_blocks_for_tool": "silentgear:incorrect_for_diamond_tools",
+        "level_hint": "3",
+        "name": "diamond"
       },
       "magic_damage": {
         "operation": "ADD",

@@ -40,6 +40,7 @@
       "harvest_speed": 4.0,
       "harvest_tier": {
         "incorrect_blocks_for_tool": "silentgear:incorrect_for_basalt_tools",
+        "level_hint": "1",
         "name": "basalt"
       },
       "projectile_accuracy": 0.8,

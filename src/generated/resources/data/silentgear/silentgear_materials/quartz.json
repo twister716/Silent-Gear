@@ -38,6 +38,7 @@
       "harvest_speed": 7.0,
       "harvest_tier": {
         "incorrect_blocks_for_tool": "silentgear:incorrect_for_quartz_tools",
+        "level_hint": "2",
         "name": "quartz"
       },
       "magic_armor": 4.0,
@@ -105,6 +106,11 @@
       "harvest_speed": {
         "operation": "ADD",
         "value": 2.0
+      },
+      "harvest_tier": {
+        "incorrect_blocks_for_tool": "silentgear:incorrect_for_quartz_tools",
+        "level_hint": "2",
+        "name": "quartz"
       },
       "ranged_damage": {
         "operation": "ADD",

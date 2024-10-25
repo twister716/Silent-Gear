@@ -44,6 +44,7 @@
       "harvest_speed": 6.0,
       "harvest_tier": {
         "incorrect_blocks_for_tool": "silentgear:incorrect_for_iron_tools",
+        "level_hint": "2",
         "name": "iron"
       },
       "magic_armor": 6.0,
@@ -109,6 +110,11 @@
       "harvest_speed": {
         "operation": "ADD",
         "value": 1.0
+      },
+      "harvest_tier": {
+        "incorrect_blocks_for_tool": "silentgear:incorrect_for_iron_tools",
+        "level_hint": "2",
+        "name": "iron"
       },
       "rarity": {
         "operation": "ADD",

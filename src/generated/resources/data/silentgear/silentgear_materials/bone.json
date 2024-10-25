@@ -42,6 +42,7 @@
       "harvest_speed": 4.0,
       "harvest_tier": {
         "incorrect_blocks_for_tool": "silentgear:incorrect_for_bone_tools",
+        "level_hint": "1",
         "name": "bone"
       },
       "magic_armor": 1.0,

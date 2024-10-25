@@ -223,11 +223,16 @@ public class MaterialBuilder<M extends Material> {
     }
 
     public MaterialBuilder<M> mainStatsHarvest(float harvestSpeed) {
+        harvestTierBuiltin(PartTypes.MAIN);
+        stat(PartTypes.MAIN, GearProperties.HARVEST_SPEED, NumberPropertyValue.average(harvestSpeed));
+        return this;
+    }
+
+    public MaterialBuilder<M> harvestTierBuiltin(Supplier<PartType> partType) {
         if (this.builtinMaterial != null) {
             var harvestTier = this.builtinMaterial.getHarvestTier();
-            stat(PartTypes.MAIN, GearProperties.HARVEST_TIER, new HarvestTierPropertyValue(harvestTier));
+            stat(partType, GearProperties.HARVEST_TIER, new HarvestTierPropertyValue(harvestTier));
         }
-        stat(PartTypes.MAIN, GearProperties.HARVEST_SPEED, NumberPropertyValue.average(harvestSpeed));
         return this;
     }
 

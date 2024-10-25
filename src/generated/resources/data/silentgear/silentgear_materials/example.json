@@ -44,6 +44,7 @@
       "harvest_speed": 1.0,
       "harvest_tier": {
         "incorrect_blocks_for_tool": "minecraft:incorrect_for_wooden_tool",
+        "level_hint": "0",
         "name": "wood"
       },
       "magic_armor": 1.0,

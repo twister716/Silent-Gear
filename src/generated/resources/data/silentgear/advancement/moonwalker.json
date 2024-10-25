@@ -49,6 +49,7 @@
           "silentgear:harvest_speed": 0.0,
           "silentgear:harvest_tier": {
             "incorrect_blocks_for_tool": "minecraft:incorrect_for_wooden_tool",
+            "level_hint": "0",
             "name": "wood"
           },
           "silentgear:knockback_resistance": 0.0,

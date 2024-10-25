@@ -38,6 +38,7 @@
       "harvest_speed": 19.0,
       "harvest_tier": {
         "incorrect_blocks_for_tool": "silentgear:incorrect_for_azure_silver_tools",
+        "level_hint": "3",
         "name": "azure_silver"
       },
       "magic_armor": 13.0,
@@ -103,6 +104,11 @@
       "harvest_speed": {
         "operation": "ADD",
         "value": 3.0
+      },
+      "harvest_tier": {
+        "incorrect_blocks_for_tool": "silentgear:incorrect_for_azure_silver_tools",
+        "level_hint": "3",
+        "name": "azure_silver"
       },
       "magic_damage": {
         "operation": "ADD",

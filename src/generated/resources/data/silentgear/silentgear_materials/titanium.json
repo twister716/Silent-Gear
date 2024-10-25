@@ -39,6 +39,7 @@
       "harvest_speed": 8.0,
       "harvest_tier": {
         "incorrect_blocks_for_tool": "minecraft:incorrect_for_netherite_tool",
+        "level_hint": "4",
         "name": "netherite"
       },
       "magic_armor": 4.0,

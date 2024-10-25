@@ -65,6 +65,7 @@
       "harvest_speed": 15.0,
       "harvest_tier": {
         "incorrect_blocks_for_tool": "silentgear:incorrect_for_blaze_gold_tools",
+        "level_hint": "2",
         "name": "blaze_gold"
       },
       "magic_armor": 10.0,
@@ -125,6 +126,11 @@
       "harvest_speed": {
         "operation": "ADD",
         "value": 4.0
+      },
+      "harvest_tier": {
+        "incorrect_blocks_for_tool": "silentgear:incorrect_for_blaze_gold_tools",
+        "level_hint": "2",
+        "name": "blaze_gold"
       },
       "magic_damage": {
         "operation": "ADD",

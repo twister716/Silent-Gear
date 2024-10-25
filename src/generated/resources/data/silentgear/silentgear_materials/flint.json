@@ -38,6 +38,7 @@
       "harvest_speed": 5.0,
       "harvest_tier": {
         "incorrect_blocks_for_tool": "silentgear:incorrect_for_flint_tools",
+        "level_hint": "1",
         "name": "flint"
       },
       "projectile_accuracy": 1.0,

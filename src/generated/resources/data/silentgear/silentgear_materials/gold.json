@@ -65,6 +65,7 @@
       "harvest_speed": 12.0,
       "harvest_tier": {
         "incorrect_blocks_for_tool": "silentgear:incorrect_for_gold_tools",
+        "level_hint": "1",
         "name": "gold"
       },
       "magic_armor": 8.0,

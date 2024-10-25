@@ -38,6 +38,7 @@
       "harvest_speed": 4.0,
       "harvest_tier": {
         "incorrect_blocks_for_tool": "silentgear:incorrect_for_terracotta_tools",
+        "level_hint": "1",
         "name": "terracotta"
       },
       "magic_armor": 3.0,

@@ -4,6 +4,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Items;
@@ -18,6 +19,7 @@ import net.silentchaos512.gear.api.material.Material;
 import net.silentchaos512.gear.api.material.MaterialCraftingData;
 import net.silentchaos512.gear.api.material.TextureType;
 import net.silentchaos512.gear.api.property.HarvestTier;
+import net.silentchaos512.gear.api.property.HarvestTierPropertyValue;
 import net.silentchaos512.gear.api.property.NumberProperty;
 import net.silentchaos512.gear.api.traits.ITraitCondition;
 import net.silentchaos512.gear.api.util.DataResource;
@@ -158,6 +160,7 @@ public class MaterialsProvider extends MaterialsProviderBase {
                 //tip
                 .stat(PartTypes.TIP, GearProperties.DURABILITY, 401, NumberProperty.Operation.ADD)
                 .stat(PartTypes.TIP, GearProperties.ARMOR_DURABILITY, 11, NumberProperty.Operation.ADD)
+                .harvestTierBuiltin(PartTypes.TIP)
                 .stat(PartTypes.TIP, GearProperties.HARVEST_SPEED, 5, NumberProperty.Operation.ADD)
                 .trait(PartTypes.TIP, Const.Traits.MALLEABLE, 3)
         );
@@ -183,6 +186,7 @@ public class MaterialsProvider extends MaterialsProviderBase {
                 //tip
                 .stat(PartTypes.TIP, GearProperties.DURABILITY, 83, NumberProperty.Operation.ADD)
                 .stat(PartTypes.TIP, GearProperties.ARMOR_DURABILITY, 3, NumberProperty.Operation.ADD)
+                .harvestTierBuiltin(PartTypes.TIP)
                 .stat(PartTypes.TIP, GearProperties.HARVEST_SPEED, 3, NumberProperty.Operation.ADD)
                 .stat(PartTypes.TIP, GearProperties.MAGIC_DAMAGE, 2, NumberProperty.Operation.ADD)
                 .stat(PartTypes.TIP, GearProperties.ATTACK_SPEED, 0.2f, NumberProperty.Operation.ADD)
@@ -210,6 +214,7 @@ public class MaterialsProvider extends MaterialsProviderBase {
                 //tip
                 .stat(PartTypes.TIP, GearProperties.DURABILITY, 32, NumberProperty.Operation.ADD)
                 .stat(PartTypes.TIP, GearProperties.ARMOR_DURABILITY, 3, NumberProperty.Operation.ADD)
+                .harvestTierBuiltin(PartTypes.TIP)
                 .stat(PartTypes.TIP, GearProperties.HARVEST_SPEED, 4, NumberProperty.Operation.ADD)
                 .stat(PartTypes.TIP, GearProperties.ATTACK_DAMAGE, 1, NumberProperty.Operation.ADD)
                 .stat(PartTypes.TIP, GearProperties.MAGIC_DAMAGE, 1, NumberProperty.Operation.ADD)
@@ -258,6 +263,7 @@ public class MaterialsProvider extends MaterialsProviderBase {
                 //tip
                 .stat(PartTypes.TIP, GearProperties.DURABILITY, 224, NumberProperty.Operation.ADD)
                 .stat(PartTypes.TIP, GearProperties.ARMOR_DURABILITY, 8, NumberProperty.Operation.ADD)
+                .harvestTierBuiltin(PartTypes.TIP)
                 .stat(PartTypes.TIP, GearProperties.HARVEST_SPEED, 2, NumberProperty.Operation.ADD)
                 .stat(PartTypes.TIP, GearProperties.ATTACK_DAMAGE, 2, NumberProperty.Operation.ADD)
                 .stat(PartTypes.TIP, GearProperties.RARITY, 10, NumberProperty.Operation.ADD)
@@ -286,6 +292,7 @@ public class MaterialsProvider extends MaterialsProviderBase {
                 //tip
                 .stat(PartTypes.TIP, GearProperties.DURABILITY, 448, NumberProperty.Operation.ADD)
                 .stat(PartTypes.TIP, GearProperties.ARMOR_DURABILITY, 16, NumberProperty.Operation.ADD)
+                .harvestTierBuiltin(PartTypes.TIP)
                 .stat(PartTypes.TIP, GearProperties.RARITY, 20, NumberProperty.Operation.ADD)
                 .trait(PartTypes.TIP, Const.Traits.MAGMATIC, 1)
         );
@@ -308,6 +315,7 @@ public class MaterialsProvider extends MaterialsProviderBase {
                 //tip
                 .stat(PartTypes.TIP, GearProperties.DURABILITY, 251, NumberProperty.Operation.ADD)
                 .stat(PartTypes.TIP, GearProperties.RARITY, 30, NumberProperty.Operation.ADD)
+                .harvestTierBuiltin(PartTypes.TIP)
                 .trait(PartTypes.TIP, Const.Traits.IMPERIAL, 3)
                 .trait(PartTypes.TIP, Const.Traits.GOLD_DIGGER, 3)
         );
@@ -393,6 +401,7 @@ public class MaterialsProvider extends MaterialsProviderBase {
                 //tip
                 .stat(PartTypes.TIP, GearProperties.DURABILITY, 128, NumberProperty.Operation.ADD)
                 .stat(PartTypes.TIP, GearProperties.ARMOR_DURABILITY, 4, NumberProperty.Operation.ADD)
+                .harvestTierBuiltin(PartTypes.TIP)
                 .stat(PartTypes.TIP, GearProperties.HARVEST_SPEED, 1, NumberProperty.Operation.ADD)
                 .stat(PartTypes.TIP, GearProperties.ATTACK_DAMAGE, 1, NumberProperty.Operation.ADD)
                 .stat(PartTypes.TIP, GearProperties.DRAW_SPEED, 0.2f, NumberProperty.Operation.ADD)
@@ -411,6 +420,13 @@ public class MaterialsProvider extends MaterialsProviderBase {
                 .stat(PartTypes.COATING, GearProperties.DURABILITY, 0.3f, NumberProperty.Operation.MULTIPLY_TOTAL)
                 .stat(PartTypes.COATING, GearProperties.DURABILITY, 2, NumberProperty.Operation.ADD)
                 .stat(PartTypes.COATING, GearProperties.ARMOR_DURABILITY, 37f / 33f - 1f, NumberProperty.Operation.MULTIPLY_TOTAL)
+                .stat(PartTypes.COATING, GearProperties.HARVEST_TIER, new HarvestTierPropertyValue(
+                        new HarvestTier(
+                                "netherite",
+                                "4",
+                                BlockTags.INCORRECT_FOR_NETHERITE_TOOL
+                        )
+                ))
                 .stat(PartTypes.COATING, GearProperties.HARVEST_SPEED, 0.125f, NumberProperty.Operation.MULTIPLY_TOTAL)
                 .stat(PartTypes.COATING, GearProperties.ATTACK_DAMAGE, 1f / 3f, NumberProperty.Operation.MULTIPLY_TOTAL)
                 .stat(PartTypes.COATING, GearProperties.MAGIC_DAMAGE, 1f / 3f, NumberProperty.Operation.MULTIPLY_TOTAL)
@@ -444,6 +460,7 @@ public class MaterialsProvider extends MaterialsProviderBase {
                 // tip
                 .stat(PartTypes.TIP, GearProperties.DURABILITY, 256, NumberProperty.Operation.ADD)
                 .stat(PartTypes.TIP, GearProperties.ARMOR_DURABILITY, 9, NumberProperty.Operation.ADD)
+                .harvestTierBuiltin(PartTypes.TIP)
                 .stat(PartTypes.TIP, GearProperties.HARVEST_SPEED, 2, NumberProperty.Operation.ADD)
                 .stat(PartTypes.TIP, GearProperties.ATTACK_DAMAGE, 2, NumberProperty.Operation.ADD)
                 .stat(PartTypes.TIP, GearProperties.MAGIC_DAMAGE, 1, NumberProperty.Operation.ADD)
@@ -475,6 +492,7 @@ public class MaterialsProvider extends MaterialsProviderBase {
                 // tip
                 .stat(PartTypes.TIP, GearProperties.DURABILITY, 512, NumberProperty.Operation.ADD)
                 .stat(PartTypes.TIP, GearProperties.ARMOR_DURABILITY, 12, NumberProperty.Operation.ADD)
+                .harvestTierBuiltin(PartTypes.TIP)
                 .stat(PartTypes.TIP, GearProperties.HARVEST_SPEED, 2, NumberProperty.Operation.ADD)
                 .stat(PartTypes.TIP, GearProperties.ATTACK_DAMAGE, 1, NumberProperty.Operation.ADD)
                 .stat(PartTypes.TIP, GearProperties.MAGIC_DAMAGE, 2, NumberProperty.Operation.ADD)
@@ -497,6 +515,7 @@ public class MaterialsProvider extends MaterialsProviderBase {
                 .mainStatsProjectile(1.0f, 0.8f)
                 .mainStatsArmor(2, 6, 5, 2, 0, 10) //15
                 // tip
+                .harvestTierBuiltin(PartTypes.TIP)
                 .stat(PartTypes.TIP, GearProperties.HARVEST_SPEED, -0.1f, NumberProperty.Operation.MULTIPLY_TOTAL)
                 .stat(PartTypes.TIP, GearProperties.MAGIC_DAMAGE, 2, NumberProperty.Operation.ADD)
                 .stat(PartTypes.TIP, GearProperties.ATTACK_SPEED, 0.3f, NumberProperty.Operation.ADD)
@@ -539,6 +558,7 @@ public class MaterialsProvider extends MaterialsProviderBase {
                 // tip
                 .stat(PartTypes.TIP, GearProperties.DURABILITY, 64, NumberProperty.Operation.ADD)
                 .stat(PartTypes.TIP, GearProperties.ARMOR_DURABILITY, 64, NumberProperty.Operation.ADD)
+                .harvestTierBuiltin(PartTypes.TIP)
                 .stat(PartTypes.TIP, GearProperties.HARVEST_SPEED, 2, NumberProperty.Operation.ADD)
                 .stat(PartTypes.TIP, GearProperties.ATTACK_DAMAGE, 4, NumberProperty.Operation.ADD)
                 .stat(PartTypes.TIP, GearProperties.RANGED_DAMAGE, 1.5f, NumberProperty.Operation.ADD)
@@ -562,6 +582,7 @@ public class MaterialsProvider extends MaterialsProviderBase {
                 .trait(PartTypes.MAIN, Const.Traits.RENEW, 1, new MaterialRatioTraitCondition(0.7f))
                 // tip
                 .stat(PartTypes.TIP, GearProperties.DURABILITY, -0.25f, NumberProperty.Operation.MULTIPLY_TOTAL)
+                .harvestTierBuiltin(PartTypes.TIP)
                 .trait(PartTypes.TIP, Const.Traits.SILKY, 1, new MaterialRatioTraitCondition(0.66f))
                 //adornment
                 .trait(PartTypes.SETTING, Const.Traits.CURSED, 4)
@@ -1135,6 +1156,7 @@ public class MaterialsProvider extends MaterialsProviderBase {
                 .trait(PartTypes.ROD, Const.Traits.ANCIENT, 3, new MaterialRatioTraitCondition(0.5f))
                 //tip
                 .stat(PartTypes.TIP, GearProperties.DURABILITY, 360, NumberProperty.Operation.ADD)
+                .harvestTierBuiltin(PartTypes.TIP)
                 .stat(PartTypes.TIP, GearProperties.HARVEST_SPEED, 2, NumberProperty.Operation.ADD)
                 .stat(PartTypes.TIP, GearProperties.ATTACK_DAMAGE, 2, NumberProperty.Operation.ADD)
                 .stat(PartTypes.TIP, GearProperties.MAGIC_DAMAGE, 1, NumberProperty.Operation.ADD)

@@ -41,6 +41,7 @@
       "harvest_speed": 9.0,
       "harvest_tier": {
         "incorrect_blocks_for_tool": "silentgear:incorrect_for_dimerald_tools",
+        "level_hint": "3",
         "name": "dimerald"
       },
       "magic_armor": 10.0,
