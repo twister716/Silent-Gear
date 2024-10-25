@@ -16,10 +16,11 @@ import net.silentchaos512.gear.SilentGear;
 import net.silentchaos512.gear.util.CodecUtils;
 
 import javax.annotation.Nullable;
+import java.util.Optional;
 
 public record HarvestTier(
         String name,
-        String levelHint,
+        Optional<String> levelHint,
         TagKey<Block> incorrectForTool
 ) {
     public static final HarvestTier ZERO = create("wood", "0", BlockTags.INCORRECT_FOR_WOODEN_TOOL);
@@ -34,14 +35,14 @@ public record HarvestTier(
     public static final Codec<HarvestTier> CODEC = RecordCodecBuilder.create(
             instance -> instance.group(
                     Codec.STRING.fieldOf("name").forGetter(ht -> ht.name),
-                    Codec.STRING.fieldOf("level_hint").forGetter(ht -> ht.levelHint),
+                    Codec.STRING.optionalFieldOf("level_hint").forGetter(ht -> ht.levelHint),
                     TagKey.codec(Registries.BLOCK).fieldOf("incorrect_blocks_for_tool").forGetter(ht -> ht.incorrectForTool)
             ).apply(instance, HarvestTier::new)
     );
 
     public static final StreamCodec<FriendlyByteBuf, HarvestTier> STREAM_CODEC = StreamCodec.composite(
             ByteBufCodecs.STRING_UTF8, ht -> ht.name,
-            ByteBufCodecs.STRING_UTF8, ht -> ht.levelHint,
+            ByteBufCodecs.STRING_UTF8.apply(ByteBufCodecs::optional), ht -> ht.levelHint,
             CodecUtils.tagStreamCodec(Registries.BLOCK), ht -> ht.incorrectForTool,
             HarvestTier::new
     );
@@ -63,11 +64,12 @@ public record HarvestTier(
     }
 
     public static HarvestTier create(String name, String levelHint, TagKey<Block> incorrectForToolTag) {
-        return new HarvestTier(name, levelHint, incorrectForToolTag);
+        return new HarvestTier(name, Optional.of(levelHint), incorrectForToolTag);
     }
 
     public Component getFormattedName() {
-        // TODO: localize it?
-        return Component.literal(this.name).append(" (").append(this.levelHint).append(")");
+        return this.levelHint
+                .map(hint -> Component.translatable("property.silentgear.harvest_tier.withLevelHint", this.name, hint))
+                .orElseGet(() -> Component.literal(this.name));
     }
 }

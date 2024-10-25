@@ -831,6 +831,7 @@
   "property.silentgear.enchantment_value": "Enchantment Value",
   "property.silentgear.harvest_speed": "Harvest Speed",
   "property.silentgear.harvest_tier": "Harvest Tier",
+  "property.silentgear.harvest_tier.withLevelHint": "%s (%s)",
   "property.silentgear.knockback_resistance": "Knockback Resistance",
   "property.silentgear.magic_armor": "Magic Armor",
   "property.silentgear.magic_damage": "Magic Damage",
