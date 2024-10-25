@@ -267,9 +267,9 @@ public final class PartInstance implements GearComponentInstance<GearPart> {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        PartInstance partData = (PartInstance) o;
-        return part.equals(partData.part) &&
-                ItemStack.isSameItemSameComponents(craftingItem, partData.craftingItem);
+        PartInstance otherPart = (PartInstance) o;
+        return this.part.equals(otherPart.part) &&
+                ItemStack.isSameItemSameComponents(craftingItem, otherPart.craftingItem);
     }
 
     @Override

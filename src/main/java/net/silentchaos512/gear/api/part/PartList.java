@@ -244,6 +244,32 @@ public class PartList implements List<PartInstance> {
         return this.list.toArray(arg0);
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) return true;
+
+        if (!(obj instanceof PartList)) return false;
+
+        ListIterator<PartInstance> iterator1 = listIterator();
+        ListIterator<PartInstance> iterator2 = ((PartList) obj).listIterator();
+        while (iterator1.hasNext() && iterator2.hasNext()) {
+            var part1 = iterator1.next();
+            var part2 = iterator2.next();
+            if (!(Objects.equals(part1, part2))) {
+                return false;
+            }
+        }
+        return !(iterator1.hasNext() || iterator2.hasNext());
+    }
+
+    @Override
+    public int hashCode() {
+        int hashCode = 1;
+        for (PartInstance part : this)
+            hashCode = 31*hashCode + (part==null ? 0 : part.hashCode());
+        return hashCode;
+    }
+
     public static class Immutable extends PartList {
         @Override
         public boolean add(PartInstance arg0) {
