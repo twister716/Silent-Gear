@@ -36,4 +36,10 @@ public abstract class GearPropertyValue<T> {
                 buf -> constructor.apply(streamCodec.decode(buf))
         );
     }
+
+    @Override
+    public abstract boolean equals(Object obj);
+
+    @Override
+    public abstract int hashCode();
 }

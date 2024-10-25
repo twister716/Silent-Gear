@@ -39,4 +39,18 @@ public class TraitListPropertyValue extends GearPropertyValue<List<TraitInstance
                 .collect(Collectors.joining(", "));
         return "[" + listText + "]";
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+
+        if (!(obj instanceof TraitListPropertyValue other)) return false;
+
+        return this.value.equals(other.value);
+    }
+
+    @Override
+    public int hashCode() {
+        return this.value.hashCode();
+    }
 }

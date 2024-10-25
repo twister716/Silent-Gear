@@ -198,6 +198,23 @@ public abstract class GearProperty<T, V extends GearPropertyValue<T>> {
         return Component.translatable("property." + name.getNamespace() + "." + name.getPath());
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) return true;
+
+        if (!(obj instanceof GearProperty<?,?> other)) return false;
+
+        var key = SgRegistries.GEAR_PROPERTY.getKey(this);
+        assert key != null;
+        return key.equals(SgRegistries.GEAR_PROPERTY.getKey(other));
+    }
+
+    @Override
+    public int hashCode() {
+        var key = SgRegistries.GEAR_PROPERTY.getKey(this);
+        return key != null ? key.hashCode() : super.hashCode();
+    }
+
     public static class Builder<T> {
         private final T baseValue;
         private final T defaultValue;
