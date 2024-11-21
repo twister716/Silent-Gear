@@ -142,7 +142,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 .add(Blocks.ANCIENT_DEBRIS)
                 .addTag(Tags.Blocks.ORES);
 
-        // Forge
+        // NeoForge
         builder(SgTags.Blocks.ORES_BORT, SgBlocks.BORT_ORE, SgBlocks.DEEPSLATE_BORT_ORE);
         builder(SgTags.Blocks.ORES_CRIMSON_IRON, SgBlocks.CRIMSON_IRON_ORE, SgBlocks.BLACKSTONE_CRIMSON_IRON_ORE);
         builder(SgTags.Blocks.ORES_AZURE_SILVER, SgBlocks.AZURE_SILVER_ORE);
@@ -154,6 +154,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
         builder(SgTags.Blocks.STORAGE_BLOCKS_RAW_CRIMSON_IRON, SgBlocks.RAW_CRIMSON_IRON_BLOCK);
         builder(SgTags.Blocks.STORAGE_BLOCKS_RAW_AZURE_SILVER, SgBlocks.RAW_AZURE_SILVER_BLOCK);
 
+        builder(SgTags.Blocks.STORAGE_BLOCKS_NETHERWOOD_CHARCOAL, SgBlocks.NETHERWOOD_CHARCOAL_BLOCK);
         builder(SgTags.Blocks.STORAGE_BLOCKS_BORT, SgBlocks.BORT_BLOCK);
         builder(SgTags.Blocks.STORAGE_BLOCKS_CRIMSON_IRON, SgBlocks.CRIMSON_IRON_BLOCK);
         builder(SgTags.Blocks.STORAGE_BLOCKS_CRIMSON_STEEL, SgBlocks.CRIMSON_STEEL_BLOCK);
@@ -162,6 +163,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
         builder(SgTags.Blocks.STORAGE_BLOCKS_AZURE_ELECTRUM, SgBlocks.AZURE_ELECTRUM_BLOCK);
         builder(SgTags.Blocks.STORAGE_BLOCKS_TYRIAN_STEEL, SgBlocks.TYRIAN_STEEL_BLOCK);
         getBuilder(Tags.Blocks.STORAGE_BLOCKS)
+                .addTag(SgTags.Blocks.STORAGE_BLOCKS_NETHERWOOD_CHARCOAL)
                 .addTag(SgTags.Blocks.STORAGE_BLOCKS_BORT)
                 .addTag(SgTags.Blocks.STORAGE_BLOCKS_BLAZE_GOLD)
                 .addTag(SgTags.Blocks.STORAGE_BLOCKS_CRIMSON_IRON)
@@ -169,6 +171,12 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 .addTag(SgTags.Blocks.STORAGE_BLOCKS_AZURE_SILVER)
                 .addTag(SgTags.Blocks.STORAGE_BLOCKS_AZURE_ELECTRUM)
                 .addTag(SgTags.Blocks.STORAGE_BLOCKS_TYRIAN_STEEL);
+
+        builder(Tags.Blocks.ORES_IN_GROUND_STONE, SgBlocks.BORT_ORE);
+        builder(Tags.Blocks.ORES_IN_GROUND_DEEPSLATE, SgBlocks.DEEPSLATE_BORT_ORE);
+        builder(Tags.Blocks.ORES_IN_GROUND_NETHERRACK, SgBlocks.CRIMSON_IRON_ORE);
+        builder(SgTags.Blocks.ORES_IN_GROUND_BLACKSTONE, SgBlocks.BLACKSTONE_CRIMSON_IRON_ORE);
+        builder(SgTags.Blocks.ORES_IN_GROUND_ENDSTONE, SgBlocks.AZURE_SILVER_BLOCK);
 
         // Minecraft
         builder(BlockTags.CROPS, SgBlocks.FLAX_PLANT, SgBlocks.FLUFFY_PLANT);

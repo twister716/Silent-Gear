@@ -42,6 +42,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         copy(SgTags.Blocks.ORES_AZURE_SILVER, SgTags.Items.ORES_AZURE_SILVER);
         copy(Tags.Blocks.ORES, Tags.Items.ORES);
 
+        copy(SgTags.Blocks.STORAGE_BLOCKS_NETHERWOOD_CHARCOAL, SgTags.Items.STORAGE_BLOCKS_NETHERWOOD_CHARCOAL);
         copy(SgTags.Blocks.STORAGE_BLOCKS_BORT, SgTags.Items.STORAGE_BLOCKS_BORT);
         copy(SgTags.Blocks.STORAGE_BLOCKS_BLAZE_GOLD, SgTags.Items.STORAGE_BLOCKS_BLAZE_GOLD);
         copy(SgTags.Blocks.STORAGE_BLOCKS_CRIMSON_IRON, SgTags.Items.STORAGE_BLOCKS_CRIMSON_IRON);
@@ -53,6 +54,12 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 
         builder(SgTags.Items.STORAGE_BLOCKS_RAW_CRIMSON_IRON, SgBlocks.RAW_CRIMSON_IRON_BLOCK);
         builder(SgTags.Items.STORAGE_BLOCKS_RAW_AZURE_SILVER, SgBlocks.RAW_AZURE_SILVER_BLOCK);
+
+        builder(Tags.Items.ORES_IN_GROUND_STONE, SgBlocks.BORT_ORE);
+        builder(Tags.Items.ORES_IN_GROUND_DEEPSLATE, SgBlocks.DEEPSLATE_BORT_ORE);
+        builder(Tags.Items.ORES_IN_GROUND_NETHERRACK, SgBlocks.CRIMSON_IRON_ORE);
+        builder(SgTags.Items.ORES_IN_GROUND_BLACKSTONE, SgBlocks.BLACKSTONE_CRIMSON_IRON_ORE);
+        builder(SgTags.Items.ORES_IN_GROUND_ENDSTONE, SgBlocks.AZURE_SILVER_BLOCK);
 
         builder(SgTags.Items.RAW_MATERIALS_CRIMSON_IRON, CraftingItems.RAW_CRIMSON_IRON);
         builder(SgTags.Items.RAW_MATERIALS_AZURE_SILVER, CraftingItems.RAW_AZURE_SILVER);

@@ -33,6 +33,7 @@ public final class SgTags {
         public static final TagKey<Block> STORAGE_BLOCKS_RAW_CRIMSON_IRON = common("storage_blocks/raw_crimson_iron");
         public static final TagKey<Block> STORAGE_BLOCKS_RAW_AZURE_SILVER = common("storage_blocks/raw_azure_silver");
 
+        public static final TagKey<Block> STORAGE_BLOCKS_NETHERWOOD_CHARCOAL = common("storage_blocks/netherwood_charcoal");
         public static final TagKey<Block> STORAGE_BLOCKS_BORT = common("storage_blocks/bort");
         public static final TagKey<Block> STORAGE_BLOCKS_BLAZE_GOLD = common("storage_blocks/blaze_gold");
         public static final TagKey<Block> STORAGE_BLOCKS_CRIMSON_IRON = common("storage_blocks/crimson_iron");
@@ -40,6 +41,9 @@ public final class SgTags {
         public static final TagKey<Block> STORAGE_BLOCKS_AZURE_SILVER = common("storage_blocks/azure_silver");
         public static final TagKey<Block> STORAGE_BLOCKS_AZURE_ELECTRUM = common("storage_blocks/azure_electrum");
         public static final TagKey<Block> STORAGE_BLOCKS_TYRIAN_STEEL = common("storage_blocks/tyrian_steel");
+
+        public static final TagKey<Block> ORES_IN_GROUND_BLACKSTONE = common("ores_in_ground/blackstone");
+        public static final TagKey<Block> ORES_IN_GROUND_ENDSTONE = common("ores_in_ground/endstone");
 
         private Blocks() {}
 
@@ -61,6 +65,7 @@ public final class SgTags {
 
         public static final TagKey<Item> COAL_GENERATOR_FUELS = silentsMechanisms("coal_generator_fuels");
 
+        public static final TagKey<Item> STORAGE_BLOCKS_NETHERWOOD_CHARCOAL = common("storage_blocks/netherwood_charcoal");
         public static final TagKey<Item> STORAGE_BLOCKS_BORT = common("storage_blocks/bort");
         public static final TagKey<Item> STORAGE_BLOCKS_BLAZE_GOLD = common("storage_blocks/blaze_gold");
         public static final TagKey<Item> STORAGE_BLOCKS_CRIMSON_IRON = common("storage_blocks/crimson_iron");
@@ -71,6 +76,9 @@ public final class SgTags {
 
         public static final TagKey<Item> STORAGE_BLOCKS_RAW_CRIMSON_IRON = common("storage_blocks/raw_crimson_iron");
         public static final TagKey<Item> STORAGE_BLOCKS_RAW_AZURE_SILVER = common("storage_blocks/raw_azure_silver");
+
+        public static final TagKey<Item> ORES_IN_GROUND_BLACKSTONE = common("ores_in_ground/blackstone");
+        public static final TagKey<Item> ORES_IN_GROUND_ENDSTONE = common("ores_in_ground/endstone");
 
         public static final TagKey<Item> RAW_MATERIALS_CRIMSON_IRON = common("raw_materials/crimson_iron");
         public static final TagKey<Item> RAW_MATERIALS_AZURE_SILVER = common("raw_materials/azure_silver");
