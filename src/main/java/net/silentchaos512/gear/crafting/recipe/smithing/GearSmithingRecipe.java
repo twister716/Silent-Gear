@@ -21,9 +21,9 @@ public abstract class GearSmithingRecipe extends SmithingTransformRecipe {
 
     @Override
     public ItemStack assemble(SmithingRecipeInput input, HolderLookup.Provider registryAccess) {
-        ItemStack gear = input.getItem(1).copy();
-        ItemStack upgradeItem = input.getItem(2);
-        return applyUpgrade(gear, upgradeItem);
+        ItemStack gearCopy = input.base().transmuteCopy(this.gearItem.getItem(), 1);
+        ItemStack upgradeItem = input.addition();
+        return applyUpgrade(gearCopy, upgradeItem);
     }
 
     protected abstract ItemStack applyUpgrade(ItemStack gear, ItemStack upgradeItem);
