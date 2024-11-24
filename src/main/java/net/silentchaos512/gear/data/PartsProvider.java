@@ -253,6 +253,7 @@ public final class PartsProvider extends PartsProviderBase {
             )
             .put(GearTypes.SHEARS.get(), b -> b
                     .numberProperty(GearProperties.DURABILITY, -0.048f, NumberProperty.Operation.MULTIPLY_BASE)
+                    .numberProperty(GearProperties.ATTACK_SPEED, 4f, NumberProperty.Operation.ADD)
                     .numberProperty(GearProperties.REPAIR_EFFICIENCY, 1.25f)
             )
             .put(GearTypes.SHIELD.get(), b -> b
