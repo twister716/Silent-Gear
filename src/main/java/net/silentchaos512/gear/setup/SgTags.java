@@ -121,6 +121,8 @@ public final class SgTags {
         public static final TagKey<Item> RODS_ROUGH = mod("rods/rough");
 
         public static final TagKey<Item> FRUITS = common("fruits");
+        public static final TagKey<Item> SEEDS_FLAX = common("seeds/flax");
+        public static final TagKey<Item> SEEDS_FLUFFY_PUFF = common("seeds/fluffy_puff");
 
         public static final TagKey<Item> ARMORS_ELYTRA = common("armors/elytra");
         public static final TagKey<Item> TOOLS_HAMMER = common("tools/hammer");

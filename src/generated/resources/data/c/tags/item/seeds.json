@@ -1,6 +1,6 @@
 {
   "values": [
-    "silentgear:flax_seeds",
-    "silentgear:fluffy_seeds"
+    "#c:seeds/flax",
+    "#c:seeds/fluffy_puff"
   ]
 }

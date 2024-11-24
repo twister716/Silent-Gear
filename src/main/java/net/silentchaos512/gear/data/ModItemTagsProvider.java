@@ -138,7 +138,11 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         builder(SgTags.Items.TEMPLATE_BOARDS, CraftingItems.TEMPLATE_BOARD);
 
         builder(SgTags.Items.FRUITS, SgItems.NETHER_BANANA);
-        builder(Tags.Items.SEEDS, SgItems.FLAX_SEEDS, SgItems.FLUFFY_SEEDS);
+        builder(SgTags.Items.SEEDS_FLAX, SgItems.FLAX_SEEDS);
+        builder(SgTags.Items.SEEDS_FLUFFY_PUFF, SgItems.FLUFFY_SEEDS);
+        tag(Tags.Items.SEEDS)
+                .addTag(SgTags.Items.SEEDS_FLAX)
+                .addTag(SgTags.Items.SEEDS_FLUFFY_PUFF);
         builder(Tags.Items.STRINGS, CraftingItems.FLAX_STRING, CraftingItems.SINEW_FIBER);
 
         builder(ItemTags.HEAD_ARMOR,
