@@ -73,7 +73,7 @@ public class GearArmorItem extends ArmorItem implements GearArmor {
 
     public float getArmorToughness(ItemStack stack) {
         if (GearHelper.isBroken(stack)) return 0;
-        return GearData.getProperties(stack).getNumber(GearProperties.ARMOR_TOUGHNESS);
+        return GearData.getProperties(stack).getNumber(GearProperties.ARMOR_TOUGHNESS) / 4f;
     }
 
     public float getArmorMagicProtection(ItemStack stack) {

@@ -3,11 +3,12 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.21.1-4.0.9] - Unreleased
+## [1.21.1-4.0.9] - 2024-11-24
 ### Added
 - A few missing tags [#743, #715]
 ### Fixed
 - Renew trait not functioning correctly (VintageGnu) [#745]
+- Armor items having incorrect armor toughness value [#742]
 - Shears having zero attack speed (not lifting onto screen when equipped) [#740]
 - Smithing recipes placing nothing in the output slot, but recipes still modify the input gear item for some reason... [#718]
 
