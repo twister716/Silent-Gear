@@ -95,7 +95,7 @@ public final class GearClientHelper {
     }
 
     public static void addStatsInfo(ItemStack stack, List<Component> tooltip, GearTooltipFlag flag, GearItem item) {
-        if (KeyTracker.isDisplayStatsDown() && flag.showStats) {
+        if (KeyTracker.isDisplayPropertiesDown() && flag.showStats) {
             tooltip.add(TextUtil.withColor(misc("tooltip.properties"), Color.GOLD));
 
             TextListBuilder builder = new TextListBuilder();
@@ -126,7 +126,7 @@ public final class GearClientHelper {
         } else if (flag.showStats) {
             tooltip.add(TextUtil.withColor(TextUtil.misc("tooltip.properties"), Color.GOLD)
                     .append(Component.literal(" ")
-                            .append(TextUtil.withColor(TextUtil.keyBinding(KeyTracker.DISPLAY_STATS), ChatFormatting.GRAY))));
+                            .append(TextUtil.withColor(TextUtil.keyBinding(KeyTracker.DISPLAY_PROPERTIES), ChatFormatting.GRAY))));
         }
     }
 

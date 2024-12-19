@@ -91,7 +91,7 @@ public class GearArrowItem extends ArrowItem implements GearItem {
 
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext tooltipContext, List<Component> tooltip, TooltipFlag flagIn) {
-        if (!KeyTracker.isDisplayStatsDown() && !KeyTracker.isDisplayTraitsDown() && !KeyTracker.isDisplayConstructionDown()) {
+        if (!KeyTracker.isDisplayPropertiesDown() && !KeyTracker.isDisplayTraitsDown() && !KeyTracker.isDisplayConstructionDown()) {
             tooltip.add(Component.literal("Do not use with vanilla crossbows, see issue #270")
                     .withStyle(ChatFormatting.RED));
         }

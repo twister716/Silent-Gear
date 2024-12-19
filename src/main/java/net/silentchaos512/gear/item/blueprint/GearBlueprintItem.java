@@ -99,7 +99,7 @@ public class GearBlueprintItem extends AbstractBlueprintItem {
     }
 
     private void appendSupportedTypesText(Collection<Component> list) {
-        if (KeyTracker.isDisplayStatsDown()) {
+        if (KeyTracker.isDisplayPropertiesDown()) {
             GearItem item = GearType.getItem(gearType());
 
             if (item != null) {
@@ -125,7 +125,7 @@ public class GearBlueprintItem extends AbstractBlueprintItem {
         } else {
             list.add(TextUtil.withColor(TextUtil.misc("supportedPartTypes"), Color.GOLD)
                     .append(" ")
-                    .append(TextUtil.withColor(TextUtil.keyBinding(KeyTracker.DISPLAY_STATS), ChatFormatting.GRAY)));
+                    .append(TextUtil.withColor(TextUtil.keyBinding(KeyTracker.DISPLAY_PROPERTIES), ChatFormatting.GRAY)));
         }
     }
 }

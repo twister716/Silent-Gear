@@ -104,7 +104,7 @@ public final class TooltipHandler {
     }
 
     private static void onMaterialTooltip(ItemTooltipEvent event, ItemStack stack, MaterialInstance material) {
-        boolean keyHeld = KeyTracker.isDisplayStatsDown();
+        boolean keyHeld = KeyTracker.isDisplayPropertiesDown();
 
         if (event.getFlags().isAdvanced()) {
             event.getToolTip().add(Component.literal("Material ID: " + material.getId()).withStyle(ChatFormatting.DARK_GRAY));
@@ -120,7 +120,7 @@ public final class TooltipHandler {
         } else {
             event.getToolTip().add(TextUtil.withColor(TextUtil.misc("tooltip.material"), Color.GOLD)
                     .append(Component.literal(" ")
-                            .append(TextUtil.withColor(TextUtil.keyBinding(KeyTracker.DISPLAY_STATS), ChatFormatting.GRAY))));
+                            .append(TextUtil.withColor(TextUtil.keyBinding(KeyTracker.DISPLAY_PROPERTIES), ChatFormatting.GRAY))));
         }
 
         getMaterialModifierLines(event, material);
@@ -205,7 +205,7 @@ public final class TooltipHandler {
     }
 
     private static void onPartTooltip(ItemTooltipEvent event, PartInstance part) {
-        if (event.getFlags().isAdvanced() && KeyTracker.isControlDown()) {
+        if (event.getFlags().isAdvanced()) {
             event.getToolTip().add(Component.literal("* Part ID: " + part.getId()).withStyle(ChatFormatting.DARK_GRAY));
             event.getToolTip().add(Component.literal("* Part data pack: " + part.get().getPackName()).withStyle(ChatFormatting.DARK_GRAY));
         }
@@ -214,7 +214,7 @@ public final class TooltipHandler {
             return;
         }
 
-        // Type, tier
+        // Type
         event.getToolTip().add(TextUtil.withColor(part.getType().getDisplayName(), Color.AQUAMARINE));
 
         // Traits
@@ -236,7 +236,7 @@ public final class TooltipHandler {
         }*/
 
         // Properties
-        if (KeyTracker.isControlDown()) {
+        if (KeyTracker.isDisplayPropertiesDown()) {
             event.getToolTip().add(Component.translatable("misc.silentgear.tooltip.properties")
                     .withStyle(ChatFormatting.GOLD)
                     .append(Component.literal(" (Silent Gear)")
@@ -244,7 +244,9 @@ public final class TooltipHandler {
                             .withStyle(ChatFormatting.ITALIC)));
             getPartStatLines(event, part);
         } else {
-            event.getToolTip().add(Component.translatable("misc.silentgear.tooltip.ctrlForProperties").withStyle(ChatFormatting.GOLD));
+            event.getToolTip().add(TextUtil.withColor(TextUtil.misc("tooltip.properties"), Color.GOLD)
+                    .append(Component.literal(" ")
+                            .append(TextUtil.withColor(TextUtil.keyBinding(KeyTracker.DISPLAY_PROPERTIES), ChatFormatting.GRAY))));
         }
 
         // Gear type blacklist?
