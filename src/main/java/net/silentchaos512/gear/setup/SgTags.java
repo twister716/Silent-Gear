@@ -43,7 +43,7 @@ public final class SgTags {
         public static final TagKey<Block> STORAGE_BLOCKS_TYRIAN_STEEL = common("storage_blocks/tyrian_steel");
 
         public static final TagKey<Block> ORES_IN_GROUND_BLACKSTONE = common("ores_in_ground/blackstone");
-        public static final TagKey<Block> ORES_IN_GROUND_ENDSTONE = common("ores_in_ground/endstone");
+        public static final TagKey<Block> ORES_IN_GROUND_END_STONE = common("ores_in_ground/end_stone");
 
         private Blocks() {}
 
@@ -78,7 +78,7 @@ public final class SgTags {
         public static final TagKey<Item> STORAGE_BLOCKS_RAW_AZURE_SILVER = common("storage_blocks/raw_azure_silver");
 
         public static final TagKey<Item> ORES_IN_GROUND_BLACKSTONE = common("ores_in_ground/blackstone");
-        public static final TagKey<Item> ORES_IN_GROUND_ENDSTONE = common("ores_in_ground/endstone");
+        public static final TagKey<Item> ORES_IN_GROUND_END_STONE = common("ores_in_ground/end_stone");
 
         public static final TagKey<Item> RAW_MATERIALS_CRIMSON_IRON = common("raw_materials/crimson_iron");
         public static final TagKey<Item> RAW_MATERIALS_AZURE_SILVER = common("raw_materials/azure_silver");

@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.21.1-4.0.10] - 2024-12-18
 ### Fixed
 - Keybindings not being present in the Controls menu. They can now be reassigned again. [#761]
+- Changes `c:ores_in_ground/endstone` tags to `c:ores_in_ground/end_stone`
 
 ## [1.21.1-4.0.9] - 2024-11-24
 ### Added

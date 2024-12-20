@@ -59,7 +59,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         builder(Tags.Items.ORES_IN_GROUND_DEEPSLATE, SgBlocks.DEEPSLATE_BORT_ORE);
         builder(Tags.Items.ORES_IN_GROUND_NETHERRACK, SgBlocks.CRIMSON_IRON_ORE);
         builder(SgTags.Items.ORES_IN_GROUND_BLACKSTONE, SgBlocks.BLACKSTONE_CRIMSON_IRON_ORE);
-        builder(SgTags.Items.ORES_IN_GROUND_ENDSTONE, SgBlocks.AZURE_SILVER_BLOCK);
+        builder(SgTags.Items.ORES_IN_GROUND_END_STONE, SgBlocks.AZURE_SILVER_BLOCK);
 
         builder(SgTags.Items.RAW_MATERIALS_CRIMSON_IRON, CraftingItems.RAW_CRIMSON_IRON);
         builder(SgTags.Items.RAW_MATERIALS_AZURE_SILVER, CraftingItems.RAW_AZURE_SILVER);
