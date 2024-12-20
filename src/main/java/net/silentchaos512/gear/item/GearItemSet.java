@@ -143,6 +143,8 @@ public final class GearItemSet<I extends Item & GearItem> {
         if (item.requiresPartOfType(PartTypes.SETTING.get())) {
             parts.add(PartInstance.from(SgItems.SETTING.get().create(MaterialInstance.of(Const.Materials.DIAMOND))));
         }
-        return item.construct(parts);
+        var result = item.construct(parts);
+        result.setCount(1); // Creative tabs don't like stack counts >1
+        return result;
     }
 }

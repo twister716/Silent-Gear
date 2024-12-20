@@ -31,6 +31,7 @@ import net.silentchaos512.gear.setup.gear.PartTypes;
 import net.silentchaos512.gear.util.GearData;
 import net.silentchaos512.gear.util.GearHelper;
 import net.silentchaos512.gear.util.TextUtil;
+import net.silentchaos512.lib.util.MathUtils;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
@@ -59,9 +60,8 @@ public class GearArrowItem extends ArrowItem implements GearItem {
 
     @Override
     public float getRepairModifier(ItemStack stack) {
-        int durability = (int) GearData.getProperties(stack).getNumber(getDurabilityStat());
-        if (durability == 0) return 1f;
-        return (float) getMaxDamage(stack) / durability;
+        // No repairs
+        return 0f;
     }
 
     @Override
@@ -72,7 +72,9 @@ public class GearArrowItem extends ArrowItem implements GearItem {
     @Override
     public ItemStack construct(Collection<PartInstance> parts) {
         ItemStack result = GearItem.super.construct(parts);
-        result.setDamageValue(result.getMaxDamage() - 64);
+        float durability = GearData.getProperties(result).getNumber(GearProperties.DURABILITY);
+        int stackCount = MathUtils.clamp(Math.round(durability / 32.5f), 1, 64);
+        result.setCount(stackCount);
         return result;
     }
 
@@ -91,13 +93,6 @@ public class GearArrowItem extends ArrowItem implements GearItem {
 
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext tooltipContext, List<Component> tooltip, TooltipFlag flagIn) {
-        if (!KeyTracker.isDisplayPropertiesDown() && !KeyTracker.isDisplayTraitsDown() && !KeyTracker.isDisplayConstructionDown()) {
-            tooltip.add(Component.literal("Do not use with vanilla crossbows, see issue #270")
-                    .withStyle(ChatFormatting.RED));
-        }
-
-        tooltip.add(TextUtil.misc("ammo", stack.getMaxDamage() - stack.getDamageValue()));
-
         GearClientHelper.addInformation(stack, tooltipContext, tooltip, flagIn);
     }
 
