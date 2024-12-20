@@ -3,12 +3,11 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.21.1-4.0.10] - 2024-12-18
+## [1.21.1-4.0.10] - 2024-12-20
 ### Fixed
 - Keybindings not being present in the Controls menu. They can now be reassigned again. [#761]
 - Changed `c:ores_in_ground/endstone` tags to `c:ores_in_ground/end_stone` [#760]
-- Rework enchantable tags so more items can be enchanted [#754]
-- Possible fix for gear items not being extractable from Refined Storage networks [#753]
+- Rework `enchantables` tags so more items can be enchanted [#754]
 - Arrows now behave more or less as intended. They now stack and no longer have a damage value. They can no longer be "repaired," you must craft more instead. [#730]
 
 ## [1.21.1-4.0.9] - 2024-11-24
