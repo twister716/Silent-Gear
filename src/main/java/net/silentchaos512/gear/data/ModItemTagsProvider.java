@@ -156,11 +156,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         builder(SgTags.Items.ARMORS_ELYTRA,
                 GearItemSets.ELYTRA.gearItem());
         builder(ItemTags.AXES,
-                GearItemSets.AXE.gearItem(),
-                GearItemSets.SAW.gearItem(),
-                GearItemSets.MACHETE.gearItem(),
-                GearItemSets.MATTOCK.gearItem(),
-                GearItemSets.PAXEL.gearItem());
+                GearItemSets.AXE.gearItem());
         builder(Tags.Items.TOOLS_BOW,
                 GearItemSets.BOW.gearItem());
         builder(Tags.Items.TOOLS_CROSSBOW,
@@ -170,15 +166,12 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 GearItemSets.PROSPECTOR_HAMMER.gearItem(),
                 SgItems.CRUDE_HAMMER);
         builder(ItemTags.HOES,
-                GearItemSets.HOE.gearItem(),
-                GearItemSets.MATTOCK.gearItem());
+                GearItemSets.HOE.gearItem());
         builder(SgTags.Items.TOOLS_KNIFE,
                 GearItemSets.KNIFE.gearItem(),
                 GearItemSets.DAGGER.gearItem(),
                 SgItems.CRUDE_KNIFE);
         builder(ItemTags.PICKAXES,
-                GearItemSets.HAMMER.gearItem(),
-                GearItemSets.PAXEL.gearItem(),
                 GearItemSets.PICKAXE.gearItem());
         builder(SgTags.Items.TOOLS_SAW,
                 GearItemSets.SAW.gearItem());
@@ -187,14 +180,10 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         builder(Tags.Items.TOOLS_SHIELD,
                 GearItemSets.SHIELD.gearItem());
         builder(ItemTags.SHOVELS,
-                GearItemSets.EXCAVATOR.gearItem(),
-                GearItemSets.MATTOCK.gearItem(),
-                GearItemSets.PAXEL.gearItem(),
                 GearItemSets.SHOVEL.gearItem());
         builder(SgTags.Items.TOOLS_SICKLE,
                 GearItemSets.SICKLE.gearItem());
         builder(ItemTags.SWORDS,
-                GearItemSets.DAGGER.gearItem(),
                 GearItemSets.KATANA.gearItem(),
                 GearItemSets.MACHETE.gearItem(),
                 GearItemSets.SWORD.gearItem());
@@ -212,8 +201,93 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         copy(BlockTags.WOODEN_STAIRS, ItemTags.WOODEN_STAIRS);
         copy(BlockTags.WOODEN_TRAPDOORS, ItemTags.WOODEN_TRAPDOORS);
 
+        tag(ItemTags.FOOT_ARMOR_ENCHANTABLE).add(GearItemSets.BOOTS.gearItem());
+        tag(ItemTags.LEG_ARMOR_ENCHANTABLE).add(GearItemSets.LEGGINGS.gearItem());
+        tag(ItemTags.CHEST_ARMOR_ENCHANTABLE).add(GearItemSets.CHESTPLATE.gearItem());
+        tag(ItemTags.HEAD_ARMOR_ENCHANTABLE).add(GearItemSets.HELMET.gearItem());
+        tag(ItemTags.ARMOR_ENCHANTABLE)
+                .add(GearItemSets.HELMET.gearItem())
+                .add(GearItemSets.CHESTPLATE.gearItem())
+                .add(GearItemSets.LEGGINGS.gearItem())
+                .add(GearItemSets.BOOTS.gearItem());
+        tag(ItemTags.SWORD_ENCHANTABLE)
+                .add(GearItemSets.SWORD.gearItem())
+                .add(GearItemSets.KATANA.gearItem())
+                .add(GearItemSets.MACHETE.gearItem())
+                .add(GearItemSets.SPEAR.gearItem());
+        tag(ItemTags.FIRE_ASPECT_ENCHANTABLE)
+                .add(GearItemSets.MACE.gearItem());
+        tag(ItemTags.SHARP_WEAPON_ENCHANTABLE)
+                .add(GearItemSets.SPEAR.gearItem())
+                .add(GearItemSets.PAXEL.gearItem())
+                .add(GearItemSets.SICKLE.gearItem());
+        tag(ItemTags.WEAPON_ENCHANTABLE)
+                .add(GearItemSets.MACE.gearItem())
+                .add(GearItemSets.HAMMER.gearItem());
+        tag(ItemTags.MINING_ENCHANTABLE)
+                .add(GearItemSets.MACHETE.gearItem())
+                .add(GearItemSets.PICKAXE.gearItem())
+                .add(GearItemSets.SHOVEL.gearItem())
+                .add(GearItemSets.AXE.gearItem())
+                .add(GearItemSets.PAXEL.gearItem())
+                .add(GearItemSets.HAMMER.gearItem())
+                .add(GearItemSets.EXCAVATOR.gearItem())
+                .add(GearItemSets.SAW.gearItem())
+                .add(GearItemSets.PROSPECTOR_HAMMER.gearItem())
+                .add(GearItemSets.HOE.gearItem())
+                .add(GearItemSets.MATTOCK.gearItem())
+                .add(GearItemSets.SHEARS.gearItem());
+        tag(ItemTags.MINING_LOOT_ENCHANTABLE)
+                .add(GearItemSets.MACHETE.gearItem())
+                .add(GearItemSets.PICKAXE.gearItem())
+                .add(GearItemSets.SHOVEL.gearItem())
+                .add(GearItemSets.AXE.gearItem())
+                .add(GearItemSets.PAXEL.gearItem())
+                .add(GearItemSets.HAMMER.gearItem())
+                .add(GearItemSets.EXCAVATOR.gearItem())
+                .add(GearItemSets.SAW.gearItem())
+                .add(GearItemSets.PROSPECTOR_HAMMER.gearItem())
+                .add(GearItemSets.HOE.gearItem())
+                .add(GearItemSets.MATTOCK.gearItem());
+        tag(ItemTags.FISHING_ENCHANTABLE).add(GearItemSets.FISHING_ROD.gearItem());
+        tag(ItemTags.TRIDENT_ENCHANTABLE).add(GearItemSets.TRIDENT.gearItem());
+        tag(ItemTags.DURABILITY_ENCHANTABLE)
+                .add(SgItems.CRUDE_KNIFE.get())
+                .add(SgItems.CRUDE_HAMMER.get())
+                .add(GearItemSets.SWORD.gearItem())
+                .add(GearItemSets.KATANA.gearItem())
+                .add(GearItemSets.MACHETE.gearItem())
+                .add(GearItemSets.KNIFE.gearItem())
+                .add(GearItemSets.DAGGER.gearItem())
+                .add(GearItemSets.SPEAR.gearItem())
+                .add(GearItemSets.TRIDENT.gearItem())
+                .add(GearItemSets.MACE.gearItem())
+                .add(GearItemSets.SHIELD.gearItem())
+                .add(GearItemSets.BOW.gearItem())
+                .add(GearItemSets.CROSSBOW.gearItem())
+                .add(GearItemSets.SLINGSHOT.gearItem())
+                .add(GearItemSets.PICKAXE.gearItem())
+                .add(GearItemSets.SHOVEL.gearItem())
+                .add(GearItemSets.AXE.gearItem())
+                .add(GearItemSets.PAXEL.gearItem())
+                .add(GearItemSets.HAMMER.gearItem())
+                .add(GearItemSets.EXCAVATOR.gearItem())
+                .add(GearItemSets.SAW.gearItem())
+                .add(GearItemSets.PROSPECTOR_HAMMER.gearItem())
+                .add(GearItemSets.HOE.gearItem())
+                .add(GearItemSets.MATTOCK.gearItem())
+                .add(GearItemSets.SICKLE.gearItem())
+                .add(GearItemSets.SHEARS.gearItem())
+                .add(GearItemSets.FISHING_ROD.gearItem())
+                .add(GearItemSets.HELMET.gearItem())
+                .add(GearItemSets.CHESTPLATE.gearItem())
+                .add(GearItemSets.LEGGINGS.gearItem())
+                .add(GearItemSets.BOOTS.gearItem())
+                .add(GearItemSets.ELYTRA.gearItem());
         tag(ItemTags.BOW_ENCHANTABLE).add(GearItemSets.BOW.gearItem());
+        tag(ItemTags.EQUIPPABLE_ENCHANTABLE).add(GearItemSets.ELYTRA.gearItem());
         tag(ItemTags.CROSSBOW_ENCHANTABLE).add(GearItemSets.CROSSBOW.gearItem());
+        tag(ItemTags.MACE_ENCHANTABLE).add(GearItemSets.MACE.gearItem());
 
         tag(ItemTags.ARROWS).add(GearItemSets.ARROW.gearItem());
         builder(ItemTags.PIGLIN_LOVED,
@@ -232,7 +306,8 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 .add(GearItemSets.HELMET.gearItem())
                 .add(GearItemSets.CHESTPLATE.gearItem())
                 .add(GearItemSets.LEGGINGS.gearItem())
-                .add(GearItemSets.BOOTS.gearItem());
+                .add(GearItemSets.BOOTS.gearItem())
+                .add(GearItemSets.ELYTRA.gearItem());
 
         // Silent Gear
 
