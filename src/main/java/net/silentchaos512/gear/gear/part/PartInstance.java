@@ -274,6 +274,6 @@ public final class PartInstance implements GearComponentInstance<GearPart> {
 
     @Override
     public int hashCode() {
-        return Objects.hash(part, craftingItem);
+        return Objects.hash(part, ItemStack.hashItemAndComponents(craftingItem));
     }
 }

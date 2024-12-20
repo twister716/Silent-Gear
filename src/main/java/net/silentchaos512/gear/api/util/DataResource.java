@@ -120,6 +120,11 @@ public class DataResource<T> implements Supplier<T> {
         return this.getId().equals(other.getId());
     }
 
+    @Override
+    public int hashCode() {
+        return this.getId().hashCode();
+    }
+
     public static final Codec<DataResource<Material>> MATERIAL_CODEC = ResourceLocation.CODEC.xmap(
             DataResource::material,
             DataResource::getId
