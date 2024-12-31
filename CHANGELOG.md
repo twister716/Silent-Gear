@@ -3,6 +3,9 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.21.1-4.0.11] - Unreleased
+- Keybindings for tooltips not working in some situations [#761]
+
 ## [1.21.1-4.0.10] - 2024-12-20
 ### Fixed
 - Keybindings not being present in the Controls menu. They can now be reassigned again. [#761]

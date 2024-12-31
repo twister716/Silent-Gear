@@ -90,24 +90,6 @@ public class KeyTracker {
                 PacketDistributor.sendToServer(new KeyPressOnItemPayload(KeyPressOnItemPayload.KeyPressType.OPEN_ITEM, getHoveredSlot()));
             }
         }
-
-        // Toggle isDown for tooltip keybindings
-        if (event.getAction() == GLFW.GLFW_PRESS) {
-            if (event.getKey() == DISPLAY_PROPERTIES.getKey().getValue()) {
-                DISPLAY_PROPERTIES.setDown(true);
-            }
-            if (event.getKey() == DISPLAY_CONSTRUCTION.getKey().getValue()) {
-                DISPLAY_CONSTRUCTION.setDown(true);
-            }
-        }
-        if (event.getAction() == GLFW.GLFW_RELEASE) {
-            if (event.getKey() == DISPLAY_PROPERTIES.getKey().getValue()) {
-                DISPLAY_PROPERTIES.setDown(false);
-            }
-            if (event.getKey() == DISPLAY_CONSTRUCTION.getKey().getValue()) {
-                DISPLAY_CONSTRUCTION.setDown(false);
-            }
-        }
     }
 
     private static ItemStack getHoveredItem() {
@@ -134,25 +116,25 @@ public class KeyTracker {
 
     public static boolean isDisplayPropertiesDown() {
         int code = DISPLAY_PROPERTIES.getKey().getValue();
-        if (code == GLFW.GLFW_KEY_LEFT_CONTROL || code == GLFW.GLFW_KEY_RIGHT_CONTROL || DISPLAY_PROPERTIES.isUnbound()) {
+        if (code == GLFW.GLFW_KEY_LEFT_CONTROL || code == GLFW.GLFW_KEY_RIGHT_CONTROL) {
             // Maintain old behavior of checking both ctrl keys
             return isControlDown();
         }
-        return DISPLAY_PROPERTIES.isDown();
+        return isKeyDown(code);
     }
 
     public static boolean isDisplayConstructionDown() {
         int code = DISPLAY_CONSTRUCTION.getKey().getValue();
-        if (code == GLFW.GLFW_KEY_LEFT_ALT || code == GLFW.GLFW_KEY_RIGHT_ALT || DISPLAY_CONSTRUCTION.isUnbound()) {
+        if (code == GLFW.GLFW_KEY_LEFT_ALT || code == GLFW.GLFW_KEY_RIGHT_ALT) {
             return isAltDown();
         }
-        return DISPLAY_CONSTRUCTION.isDown();
+        return isKeyDown(code);
     }
 
     @Deprecated
     public static boolean isDisplayTraitsDown() {
         int code = DISPLAY_TRAITS.getKey().getValue();
-        if (code == GLFW.GLFW_KEY_LEFT_SHIFT || code == GLFW.GLFW_KEY_RIGHT_SHIFT || DISPLAY_TRAITS.isUnbound()) {
+        if (code == GLFW.GLFW_KEY_LEFT_SHIFT || code == GLFW.GLFW_KEY_RIGHT_SHIFT) {
             return isShiftDown();
         }
         return DISPLAY_TRAITS.isDown();
@@ -171,5 +153,10 @@ public class KeyTracker {
     public static boolean isAltDown() {
         long h = Minecraft.getInstance().getWindow().getWindow();
         return InputConstants.isKeyDown(h, GLFW.GLFW_KEY_LEFT_ALT) || InputConstants.isKeyDown(h, GLFW.GLFW_KEY_RIGHT_ALT);
+    }
+
+    public static boolean isKeyDown(int keycode) {
+        long h = Minecraft.getInstance().getWindow().getWindow();
+        return InputConstants.isKeyDown(h, keycode);
     }
 }
