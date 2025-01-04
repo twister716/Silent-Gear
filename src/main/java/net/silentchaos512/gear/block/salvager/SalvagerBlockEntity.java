@@ -2,28 +2,21 @@ package net.silentchaos512.gear.block.salvager;
 
 import com.google.common.collect.ImmutableList;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.Container;
-import net.minecraft.world.ContainerHelper;
-import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.player.StackedContents;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
-import net.minecraft.world.inventory.StackedContentsCompatible;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.silentchaos512.gear.SilentGear;
+import net.neoforged.neoforge.items.ItemStackHandler;
 import net.silentchaos512.gear.Config;
+import net.silentchaos512.gear.SilentGear;
+import net.silentchaos512.gear.block.SgContainerBlockEntity;
 import net.silentchaos512.gear.crafting.recipe.salvage.SalvagingRecipe;
 import net.silentchaos512.gear.gear.part.PartInstance;
 import net.silentchaos512.gear.setup.SgBlockEntities;
@@ -35,7 +28,7 @@ import javax.annotation.Nullable;
 import java.util.Collection;
 import java.util.stream.IntStream;
 
-public class SalvagerBlockEntity extends BaseContainerBlockEntity implements WorldlyContainer, StackedContentsCompatible {
+public class SalvagerBlockEntity extends SgContainerBlockEntity {
     static final int BASE_WORK_TIME = TimeUtils.ticksFromSeconds(SilentGear.isDevBuild() ? 2 : 10);
     private static final int INPUT_SLOT = 0;
     private static final int[] SLOTS_INPUT = {INPUT_SLOT};
@@ -45,7 +38,6 @@ public class SalvagerBlockEntity extends BaseContainerBlockEntity implements Wor
 
     private final RecipeManager.CachedCheck<SingleRecipeInput, SalvagingRecipe> quickCheck;
 
-    private NonNullList<ItemStack> items = NonNullList.withSize(INVENTORY_SIZE, ItemStack.EMPTY);
     int progress = 0;
 
     private final ContainerData fields = new ContainerData() {
@@ -70,6 +62,22 @@ public class SalvagerBlockEntity extends BaseContainerBlockEntity implements Wor
         this.quickCheck = RecipeManager.createCheck(SgRecipes.SALVAGING_TYPE.get());
     }
 
+    @Override
+    public ItemStackHandler createItemHandler() {
+        return new ItemStackHandler(INVENTORY_SIZE) {
+            @Override
+            public boolean isItemValid(int slot, ItemStack stack) {
+                return slot == INPUT_SLOT && !stack.isEmpty();
+            }
+
+            @Override
+            public ItemStack extractItem(int slot, int amount, boolean simulate) {
+                if (slot == INPUT_SLOT) return ItemStack.EMPTY;
+                return super.extractItem(slot, amount, simulate);
+            }
+        };
+    }
+
     @Nullable
     private SalvagingRecipe getRecipe(ItemStack input) {
         if (level == null || input.isEmpty()) return null;
@@ -80,58 +88,8 @@ public class SalvagerBlockEntity extends BaseContainerBlockEntity implements Wor
         return null;
     }
 
-    @Override
-    public int getContainerSize() {
-        return this.items.size();
-    }
-
-    @Override
-    public boolean isEmpty() {
-        for (ItemStack stack : this.items) {
-            if (!stack.isEmpty()) {
-                return false;
-            }
-        }
-        return true;
-    }
-
     public ItemStack getInputItem() {
-        return this.items.get(INPUT_SLOT);
-    }
-
-    @Override
-    public ItemStack getItem(int pSlot) {
-        return this.items.get(pSlot);
-    }
-
-    @Override
-    public ItemStack removeItem(int pSlot, int pAmount) {
-        return ContainerHelper.removeItem(this.items, pSlot, pAmount);
-    }
-
-    @Override
-    public ItemStack removeItemNoUpdate(int pSlot) {
-        return ContainerHelper.takeItem(this.items, pSlot);
-    }
-
-    @Override
-    public void setItem(int pSlot, ItemStack pStack) {
-        ItemStack itemstack = this.items.get(pSlot);
-        boolean flag = !pStack.isEmpty() && ItemStack.isSameItemSameComponents(itemstack, pStack);
-        this.items.set(pSlot, pStack);
-        if (pStack.getCount() > this.getMaxStackSize()) {
-            pStack.setCount(this.getMaxStackSize());
-        }
-
-        if (pSlot < getContainerSize() - 1 && !flag) {
-            this.progress = 0;
-            this.setChanged();
-        }
-    }
-
-    @Override
-    public boolean stillValid(Player pPlayer) {
-        return Container.stillValidBlockEntity(this, pPlayer);
+        return this.items.getStackInSlot(INPUT_SLOT);
     }
 
     public static void tick(Level level, BlockPos pos, BlockState state, SalvagerBlockEntity blockEntity) {
@@ -224,16 +182,6 @@ public class SalvagerBlockEntity extends BaseContainerBlockEntity implements Wor
         return tags;
     }
 
-    @SuppressWarnings("AssignmentOrReturnOfFieldWithMutableType")
-    @Override
-    public int[] getSlotsForFace(Direction side) {
-        return switch (side) {
-            case DOWN -> SLOTS_OUTPUT;
-            case UP -> SLOTS_INPUT;
-            default -> SLOTS_ALL;
-        };
-    }
-
     @Override
     public boolean canPlaceItem(int index, ItemStack stack) {
         if (stack.isEmpty() || isOutputSlot(index)) {
@@ -246,16 +194,6 @@ public class SalvagerBlockEntity extends BaseContainerBlockEntity implements Wor
         }
 
         return isInputSlot(index) || super.canPlaceItem(index, stack);
-    }
-
-    @Override
-    public boolean canPlaceItemThroughFace(int index, ItemStack itemStackIn, @Nullable Direction direction) {
-        return canPlaceItem(index, itemStackIn);
-    }
-
-    @Override
-    public boolean canTakeItemThroughFace(int index, ItemStack stack, Direction direction) {
-        return isOutputSlot(index);
     }
 
     private static boolean isInputSlot(int index) {
@@ -282,42 +220,13 @@ public class SalvagerBlockEntity extends BaseContainerBlockEntity implements Wor
     }
 
     @Override
-    protected NonNullList<ItemStack> getItems() {
-        return this.items;
-    }
-
-    @Override
-    protected void setItems(NonNullList<ItemStack> pItems) {
-        this.items = pItems;
-    }
-
-    @Override
     protected AbstractContainerMenu createMenu(int id, Inventory playerInventory) {
         return new SalvagerContainer(id, playerInventory, this, fields);
     }
 
     @Override
-    public void clearContent() {
-        this.items.clear();
-    }
-
-    @Override
-    public void fillStackedContents(StackedContents pContents) {
-        for (ItemStack stack : this.items) {
-            pContents.accountStack(stack);
-        }
-    }
-
-    @Override
-    public void loadAdditional(CompoundTag tags, HolderLookup.Provider provider) {
-        super.loadAdditional(tags, provider);
-        this.items = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
-        ContainerHelper.loadAllItems(tags, this.items, provider);
-    }
-
-    @Override
-    protected void saveAdditional(CompoundTag pTag, HolderLookup.Provider provider) {
-        super.saveAdditional(pTag, provider);
-        ContainerHelper.saveAllItems(pTag, this.items, provider);
+    public void setChanged() {
+        this.progress = 0;
+        super.setChanged();
     }
 }

@@ -1,58 +1,47 @@
 package net.silentchaos512.gear.block.press;
 
-import net.minecraft.core.*;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.Container;
-import net.minecraft.world.ContainerHelper;
-import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.player.StackedContents;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
-import net.minecraft.world.inventory.StackedContentsCompatible;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.items.ItemStackHandler;
 import net.silentchaos512.gear.SilentGear;
+import net.silentchaos512.gear.block.SgContainerBlockEntity;
 import net.silentchaos512.gear.crafting.recipe.press.PressingRecipe;
 import net.silentchaos512.gear.setup.SgBlockEntities;
 import net.silentchaos512.gear.setup.SgRecipes;
 import net.silentchaos512.gear.util.TextUtil;
-import net.silentchaos512.lib.util.InventoryUtils;
 import net.silentchaos512.lib.util.TimeUtils;
 
 import javax.annotation.Nullable;
 
-public class MetalPressBlockEntity extends BaseContainerBlockEntity implements WorldlyContainer, StackedContentsCompatible {
+public class MetalPressBlockEntity extends SgContainerBlockEntity {
     static final int WORK_TIME = TimeUtils.ticksFromSeconds(SilentGear.isDevBuild() ? 2 : 10);
 
     private final RecipeManager.CachedCheck<SingleRecipeInput, PressingRecipe> quickCheck;
 
-    private NonNullList<ItemStack> items = NonNullList.withSize(2, ItemStack.EMPTY);
     private int progress = 0;
 
     @SuppressWarnings("OverlyComplexAnonymousInnerClass") private final ContainerData fields = new ContainerData() {
         @Override
         public int get(int index) {
-            switch (index) {
-                case 0:
-                    return progress;
-                default:
-                    return 0;
+            if (index == 0) {
+                return progress;
             }
+            return 0;
         }
 
         @Override
         public void set(int index, int value) {
-            switch (index) {
-                case 0:
-                    progress = value;
-                    break;
+            if (index == 0) {
+                progress = value;
             }
         }
 
@@ -68,11 +57,11 @@ public class MetalPressBlockEntity extends BaseContainerBlockEntity implements W
     }
 
     @Nullable
-    public PressingRecipe getRecipe() {
-        if (level == null || getItem(0).isEmpty()) {
+    public PressingRecipe getRecipe(ItemStack stack) {
+        if (level == null || stack.isEmpty()) {
             return null;
         }
-        var holder = quickCheck.getRecipeFor(new SingleRecipeInput(this.items.getFirst()), level).orElse(null);
+        var holder = quickCheck.getRecipeFor(new SingleRecipeInput(stack), level).orElse(null);
         if (holder != null) {
             return holder.value();
         }
@@ -81,13 +70,13 @@ public class MetalPressBlockEntity extends BaseContainerBlockEntity implements W
 
     private ItemStack getWorkOutput(@Nullable PressingRecipe recipe, RegistryAccess registryAccess) {
         if (recipe != null) {
-            return recipe.assemble(new SingleRecipeInput(this.items.getFirst()), registryAccess);
+            return recipe.assemble(new SingleRecipeInput(getItem(0)), registryAccess);
         }
         return ItemStack.EMPTY;
     }
 
     public static void tick(Level level, BlockPos pos, BlockState state, MetalPressBlockEntity blockEntity) {
-        PressingRecipe recipe = blockEntity.getRecipe();
+        PressingRecipe recipe = blockEntity.getRecipe(blockEntity.getItem(0));
         if (recipe != null) {
             blockEntity.doWork(recipe, level.registryAccess());
         } else {
@@ -149,18 +138,9 @@ public class MetalPressBlockEntity extends BaseContainerBlockEntity implements W
     }
 
     @Override
-    public int[] getSlotsForFace(Direction side) {
-        return new int[]{0, 1};
-    }
-
-    @Override
-    public boolean canPlaceItemThroughFace(int index, ItemStack itemStackIn, @Nullable Direction direction) {
-        return canPlaceItem(index, itemStackIn);
-    }
-
-    @Override
-    public boolean canTakeItemThroughFace(int index, ItemStack stack, Direction direction) {
-        return index == 1;
+    public void setChanged() {
+        this.progress = 0;
+        super.setChanged();
     }
 
     @Override
@@ -169,92 +149,23 @@ public class MetalPressBlockEntity extends BaseContainerBlockEntity implements W
     }
 
     @Override
-    protected NonNullList<ItemStack> getItems() {
-        return this.items;
-    }
+    public ItemStackHandler createItemHandler() {
+        return new ItemStackHandler(2) {
+            @Override
+            public boolean isItemValid(int slot, ItemStack stack) {
+                return slot == 0 && getRecipe(stack) != null;
+            }
 
-    @Override
-    protected void setItems(NonNullList<ItemStack> pItems) {
-        this.items = pItems;
+            @Override
+            public ItemStack extractItem(int slot, int amount, boolean simulate) {
+                if (slot == 0) return ItemStack.EMPTY;
+                return super.extractItem(slot, amount, simulate);
+            }
+        };
     }
 
     @Override
     protected AbstractContainerMenu createMenu(int id, Inventory player) {
         return new MetalPressContainer(id, player, this, this.fields);
-    }
-
-    @Override
-    public int getContainerSize() {
-        return this.items.size();
-    }
-
-    @Override
-    public boolean isEmpty() {
-        for (ItemStack stack : this.items) {
-            if (!stack.isEmpty()) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    @Override
-    public ItemStack getItem(int pSlot) {
-        return this.items.get(pSlot);
-    }
-
-    @Override
-    public ItemStack removeItem(int pSlot, int pAmount) {
-        return ContainerHelper.removeItem(this.items, pSlot, pAmount);
-    }
-
-    @Override
-    public ItemStack removeItemNoUpdate(int pSlot) {
-        return ContainerHelper.takeItem(this.items, pSlot);
-    }
-
-    @Override
-    public void setItem(int pSlot, ItemStack pStack) {
-        ItemStack itemstack = this.items.get(pSlot);
-        boolean flag = !pStack.isEmpty() && ItemStack.isSameItemSameComponents(itemstack, pStack);
-        this.items.set(pSlot, pStack);
-        if (pStack.getCount() > this.getMaxStackSize()) {
-            pStack.setCount(this.getMaxStackSize());
-        }
-
-        if (pSlot < this.items.size() - 1 && !flag) {
-            this.progress = 0;
-            this.setChanged();
-        }
-    }
-
-    @Override
-    public boolean stillValid(Player pPlayer) {
-        return Container.stillValidBlockEntity(this, pPlayer);
-    }
-
-    @Override
-    public void clearContent() {
-        this.items.clear();
-    }
-
-    @Override
-    public void fillStackedContents(StackedContents pContents) {
-        for (ItemStack stack : this.items) {
-            pContents.accountStack(stack);
-        }
-    }
-
-    @Override
-    public void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-        super.loadAdditional(tag, provider);
-        this.items = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
-        ContainerHelper.loadAllItems(tag, this.items, provider);
-    }
-
-    @Override
-    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-        super.saveAdditional(tag, provider);
-        ContainerHelper.saveAllItems(tag, this.items, provider);
     }
 }

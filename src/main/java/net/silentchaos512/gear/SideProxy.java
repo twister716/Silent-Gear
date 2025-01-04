@@ -8,6 +8,7 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.level.Level;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.event.lifecycle.*;
+import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.AddReloadListenerEvent;
@@ -96,6 +97,15 @@ class SideProxy implements IProxy {
         /*if (ModList.get().isLoaded(Const.CURIOS)) {
             event.register(CurioGearItemCapability.class);
         }*/
+
+        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, SgBlockEntities.ALLOY_FORGE.get(), (be, side) -> be.getItemHandler());
+        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, SgBlockEntities.MATERIAL_GRADER.get(), (be, side) -> be.getItemHandler());
+        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, SgBlockEntities.METAL_PRESS.get(), (be, side) -> be.getItemHandler());
+        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, SgBlockEntities.RECRYSTALLIZER.get(), (be, side) -> be.getItemHandler());
+        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, SgBlockEntities.REFABRICATOR.get(), (be, side) -> be.getItemHandler());
+        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, SgBlockEntities.SALVAGER.get(), (be, side) -> be.getItemHandler());
+        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, SgBlockEntities.STARLIGHT_CHARGER.get(), (be, side) -> be.getItemHandler());
+        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, SgBlockEntities.SUPER_MIXER.get(), (be, side) -> be.getItemHandler());
     }
 
     private static void imcEnqueue(InterModEnqueueEvent event) {

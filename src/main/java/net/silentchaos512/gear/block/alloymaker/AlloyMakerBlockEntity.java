@@ -1,7 +1,10 @@
 package net.silentchaos512.gear.block.alloymaker;
 
 import net.minecraft.Util;
-import net.minecraft.core.*;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.NonNullList;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
@@ -9,46 +12,39 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.Container;
-import net.minecraft.world.ContainerHelper;
-import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.player.StackedContents;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
-import net.minecraft.world.inventory.StackedContentsCompatible;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.items.ItemStackHandler;
 import net.silentchaos512.gear.SilentGear;
 import net.silentchaos512.gear.api.material.Material;
 import net.silentchaos512.gear.api.part.PartType;
 import net.silentchaos512.gear.block.IDroppableInventory;
+import net.silentchaos512.gear.block.SgContainerBlockEntity;
 import net.silentchaos512.gear.crafting.recipe.alloy.AlloyRecipe;
 import net.silentchaos512.gear.crafting.recipe.alloy.AlloyRecipeInput;
 import net.silentchaos512.gear.gear.material.MaterialInstance;
 import net.silentchaos512.gear.item.CompoundMaterialItem;
 import net.silentchaos512.gear.setup.SgRegistries;
 import net.silentchaos512.lib.util.TimeUtils;
+import org.apache.commons.lang3.NotImplementedException;
 
 import javax.annotation.Nullable;
 import java.util.*;
-import java.util.stream.IntStream;
 
 @SuppressWarnings("WeakerAccess")
-public class AlloyMakerBlockEntity<R extends AlloyRecipe> extends BaseContainerBlockEntity implements IDroppableInventory, WorldlyContainer, StackedContentsCompatible {
+public class AlloyMakerBlockEntity<R extends AlloyRecipe> extends SgContainerBlockEntity implements IDroppableInventory {
     public static final int STANDARD_INPUT_SLOTS = 4;
     static final int WORK_TIME = TimeUtils.ticksFromSeconds(SilentGear.isDevBuild() ? 2 : 10);
 
     private final AlloyMakerInfo<R> info;
-    private final int[] allSlots;
     private final RecipeManager.CachedCheck<AlloyRecipeInput, R> quickCheck;
 
-    private NonNullList<ItemStack> items;
     private ItemStack outputItemHint = ItemStack.EMPTY;
     private int progress = 0;
     private boolean workEnabled = true;
@@ -82,10 +78,8 @@ public class AlloyMakerBlockEntity<R extends AlloyRecipe> extends BaseContainerB
     };
 
     public AlloyMakerBlockEntity(AlloyMakerInfo<R> info, BlockPos pos, BlockState state) {
-        super(info.getBlockEntityType(), pos, state);
-        this.items = NonNullList.withSize(info.getInputSlotCount() + 2, ItemStack.EMPTY);
+        super(info.getBlockEntityType(), pos, state, () -> createItemHandler(info));
         this.info = info;
-        this.allSlots = IntStream.range(0, this.items.size()).toArray();
         this.quickCheck = RecipeManager.createCheck(info.getRecipeType());
     }
 
@@ -121,7 +115,7 @@ public class AlloyMakerBlockEntity<R extends AlloyRecipe> extends BaseContainerB
     }
 
     public void encodeExtraData(FriendlyByteBuf buffer) {
-        buffer.writeByte(this.items.size());
+        buffer.writeByte(this.getItemHandler().getSlots());
         buffer.writeByte(this.fields.getCount());
     }
 
@@ -286,73 +280,14 @@ public class AlloyMakerBlockEntity<R extends AlloyRecipe> extends BaseContainerB
     }
 
     @Override
-    public int getContainerSize() {
-        return this.items.size();
-    }
-
-    @Override
-    public boolean isEmpty() {
-        for (ItemStack stack : this.items) {
-            if (!stack.isEmpty()) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    @Override
-    public ItemStack getItem(int pSlot) {
-        return this.items.get(pSlot);
-    }
-
-    @Override
-    public ItemStack removeItem(int pSlot, int pAmount) {
-        return ContainerHelper.removeItem(this.items, pSlot, pAmount);
-    }
-
-    @Override
-    public ItemStack removeItemNoUpdate(int pSlot) {
-        return ContainerHelper.takeItem(this.items, pSlot);
-    }
-
-    @Override
-    public void setItem(int pSlot, ItemStack pStack) {
-        ItemStack itemstack = this.items.get(pSlot);
-        boolean flag = !pStack.isEmpty() && ItemStack.isSameItemSameComponents(itemstack, pStack);
-        this.items.set(pSlot, pStack);
-        if (pStack.getCount() > this.getMaxStackSize()) {
-            pStack.setCount(this.getMaxStackSize());
-        }
-
-        if (pSlot < getContainerSize() - 1 && !flag) {
-            this.progress = 0;
-            this.setChanged();
-        }
-    }
-
-    @Override
-    public boolean stillValid(Player pPlayer) {
-        return Container.stillValidBlockEntity(this, pPlayer);
-    }
-
-    @Override
-    public int[] getSlotsForFace(Direction side) {
-        return allSlots.clone();
+    public void setChanged() {
+        this.progress = 0;
+        super.setChanged();
     }
 
     @Override
     public boolean canPlaceItem(int index, ItemStack stack) {
         return index < getInputSlotCount();
-    }
-
-    @Override
-    public boolean canPlaceItemThroughFace(int index, ItemStack itemStackIn, @Nullable Direction direction) {
-        return canPlaceItem(index, itemStackIn);
-    }
-
-    @Override
-    public boolean canTakeItemThroughFace(int index, ItemStack stack, Direction direction) {
-        return index == getOutputSlotIndex();
     }
 
     @Override
@@ -362,13 +297,32 @@ public class AlloyMakerBlockEntity<R extends AlloyRecipe> extends BaseContainerB
     }
 
     @Override
-    protected NonNullList<ItemStack> getItems() {
-        return this.items;
+    public ItemStackHandler createItemHandler() {
+        throw new NotImplementedException("Please use the secondary SgContainerBlockEntity constructor for AlloyMakerBlockEntity");
     }
 
-    @Override
-    protected void setItems(NonNullList<ItemStack> pItems) {
-        this.items = pItems;
+    public static ItemStackHandler createItemHandler(AlloyMakerInfo<?> info) {
+        var inputSlotCount = info.getInputSlotCount();
+        var totalSlots = inputSlotCount + 2;
+
+        return new ItemStackHandler(totalSlots) {
+            @Override
+            public boolean isItemValid(int slot, ItemStack stack) {
+                // Only materials in the correct categories are accepted
+                if (slot >= 0 && slot < inputSlotCount) {
+                    var material = MaterialInstance.from(stack);
+                    return material != null && info.acceptsMaterial(material);
+                }
+                return false;
+            }
+
+            @Override
+            public ItemStack extractItem(int slot, int amount, boolean simulate) {
+                // Can only extra from the true output slot
+                if (slot != inputSlotCount) return ItemStack.EMPTY;
+                return super.extractItem(slot, amount, simulate);
+            }
+        };
     }
 
     @Override
@@ -384,8 +338,6 @@ public class AlloyMakerBlockEntity<R extends AlloyRecipe> extends BaseContainerB
     @Override
     public void loadAdditional(CompoundTag tags, HolderLookup.Provider provider) {
         super.loadAdditional(tags, provider);
-        this.items = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
-        ContainerHelper.loadAllItems(tags, this.items, provider);
         this.progress = tags.getInt("Progress");
         this.workEnabled = tags.getBoolean("WorkEnabled");
     }
@@ -395,7 +347,6 @@ public class AlloyMakerBlockEntity<R extends AlloyRecipe> extends BaseContainerB
         super.saveAdditional(tags, provider);
         tags.putInt("Progress", this.progress);
         tags.putBoolean("WorkEnabled", this.workEnabled);
-        ContainerHelper.saveAllItems(tags, this.items, provider);
     }
 
     @Override
@@ -413,18 +364,6 @@ public class AlloyMakerBlockEntity<R extends AlloyRecipe> extends BaseContainerB
         if (tags != null) {
             this.progress = tags.getInt("Progress");
             this.workEnabled = tags.getBoolean("WorkEnabled");
-        }
-    }
-
-    @Override
-    public void clearContent() {
-        this.items.clear();
-    }
-
-    @Override
-    public void fillStackedContents(StackedContents pContents) {
-        for (ItemStack stack : this.items) {
-            pContents.accountStack(stack);
         }
     }
 }

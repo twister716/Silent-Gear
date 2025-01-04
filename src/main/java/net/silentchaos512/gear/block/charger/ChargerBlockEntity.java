@@ -3,52 +3,43 @@ package net.silentchaos512.gear.block.charger;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
-import net.minecraft.world.Container;
-import net.minecraft.world.ContainerHelper;
-import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.player.StackedContents;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
-import net.minecraft.world.inventory.StackedContentsCompatible;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.items.ItemStackHandler;
+import net.silentchaos512.gear.Config;
 import net.silentchaos512.gear.SilentGear;
 import net.silentchaos512.gear.api.material.modifier.IMaterialModifier;
 import net.silentchaos512.gear.block.INamedContainerExtraData;
-import net.silentchaos512.gear.Config;
+import net.silentchaos512.gear.block.SgContainerBlockEntity;
 import net.silentchaos512.gear.gear.material.MaterialInstance;
-import net.silentchaos512.gear.setup.gear.MaterialModifiers;
 import net.silentchaos512.gear.gear.material.modifier.ChargedMaterialModifier;
 import net.silentchaos512.gear.gear.material.modifier.StarchargedMaterialModifier;
 import net.silentchaos512.gear.setup.SgBlockEntities;
 import net.silentchaos512.gear.setup.SgBlocks;
 import net.silentchaos512.gear.setup.SgTags;
 import net.silentchaos512.gear.setup.gear.GearProperties;
+import net.silentchaos512.gear.setup.gear.MaterialModifiers;
 import net.silentchaos512.gear.setup.gear.PartTypes;
 import net.silentchaos512.gear.util.TextUtil;
 import net.silentchaos512.lib.util.MathUtils;
 import net.silentchaos512.lib.util.NameUtils;
 import net.silentchaos512.lib.util.TimeUtils;
 
-import javax.annotation.Nullable;
-
-public class ChargerBlockEntity<T extends ChargedMaterialModifier> extends BaseContainerBlockEntity implements INamedContainerExtraData, WorldlyContainer, StackedContentsCompatible {
+public class ChargerBlockEntity<T extends ChargedMaterialModifier> extends SgContainerBlockEntity implements INamedContainerExtraData {
     static final int INVENTORY_SIZE = 3;
     private static final int UPDATE_FREQUENCY = TimeUtils.ticksFromSeconds(15);
 
     private final ChargedMaterialModifier.Type<T> modifierType;
 
-    private NonNullList<ItemStack> items = NonNullList.withSize(INVENTORY_SIZE, ItemStack.EMPTY);
     private int progress = 0;
     private int workTime = 100;
     private int charge = 0;
@@ -273,99 +264,39 @@ public class ChargerBlockEntity<T extends ChargedMaterialModifier> extends BaseC
     }
 
     @Override
-    protected NonNullList<ItemStack> getItems() {
-        return items;
-    }
-
-    @Override
-    protected void setItems(NonNullList<ItemStack> pItems) {
-        this.items = pItems;
-    }
-
-    @Override
     protected AbstractContainerMenu createMenu(int id, Inventory player) {
         return ChargerContainerMenu.createStarlightCharger(id, player, this, fields);
     }
 
     @Override
-    public int[] getSlotsForFace(Direction side) {
-        return new int[]{0, 1, 2};
-    }
+    public ItemStackHandler createItemHandler() {
+        return new ItemStackHandler(INVENTORY_SIZE) {
+            @Override
+            public boolean isItemValid(int slot, ItemStack stack) {
+                return switch (slot) {
+                    case 0 -> MaterialInstance.from(stack) != null;
+                    case 1 -> stack.is(SgTags.Items.STARLIGHT_CHARGER_CATALYSTS);
+                    default -> false;
+                };
+            }
 
-    @Override
-    public boolean canPlaceItemThroughFace(int index, ItemStack itemStackIn, @Nullable Direction direction) {
-        return canPlaceItem(index, itemStackIn);
-    }
-
-    @Override
-    public boolean canTakeItemThroughFace(int index, ItemStack stack, Direction direction) {
-        return index > 1; // Not the material or catalyst slots
-    }
-
-    @Override
-    public int getContainerSize() {
-        return this.items.size();
-    }
-
-    @Override
-    public boolean isEmpty() {
-        for (ItemStack stack : this.items) {
-            if (!stack.isEmpty()) {
-                return false;
+            @Override
+            public ItemStack extractItem(int slot, int amount, boolean simulate) {
+                if (slot != 2) return ItemStack.EMPTY;
+                return super.extractItem(slot, amount, simulate);
             }
         };
-        return true;
     }
 
     @Override
-    public ItemStack getItem(int pSlot) {
-        return this.items.get(pSlot);
-    }
-
-    @Override
-    public ItemStack removeItem(int pSlot, int pAmount) {
-        return ContainerHelper.removeItem(this.items, pSlot, pAmount);
-    }
-
-    @Override
-    public ItemStack removeItemNoUpdate(int pSlot) {
-        return ContainerHelper.takeItem(this.items, pSlot);
-    }
-
-    @Override
-    public void setItem(int pSlot, ItemStack pStack) {
-        ItemStack itemstack = this.items.get(pSlot);
-        boolean flag = !pStack.isEmpty() && ItemStack.isSameItemSameComponents(itemstack, pStack);
-        this.items.set(pSlot, pStack);
-        if (pStack.getCount() > this.getMaxStackSize()) {
-            pStack.setCount(this.getMaxStackSize());
-        }
-
-        if (pSlot < INVENTORY_SIZE - 1 && !flag) {
-            this.progress = 0;
-            this.setChanged();
-        }
-    }
-
-    @Override
-    public boolean stillValid(Player pPlayer) {
-        return Container.stillValidBlockEntity(this, pPlayer);
-    }
-
-    @Override
-    public boolean canPlaceItem(int index, ItemStack stack) {
-        return switch (index) {
-            case 0 -> MaterialInstance.from(stack) != null;
-            case 1 -> stack.is(SgTags.Items.STARLIGHT_CHARGER_CATALYSTS);
-            default -> false;
-        };
+    public void setChanged() {
+        this.progress = 0;
+        super.setChanged();
     }
 
     @Override
     protected void loadAdditional(CompoundTag tags, HolderLookup.Provider provider) {
         super.loadAdditional(tags, provider);
-        this.items = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
-        ContainerHelper.loadAllItems(tags, this.items, provider);
         this.progress = tags.getInt("Progress");
         this.workTime = tags.getInt("WorkTime");
         this.charge = tags.getInt("Charge");
@@ -379,7 +310,6 @@ public class ChargerBlockEntity<T extends ChargedMaterialModifier> extends BaseC
         tags.putInt("WorkTime", this.workTime);
         tags.putInt("Charge", this.charge);
         tags.putInt("StructureLevel", this.structureLevel);
-        ContainerHelper.saveAllItems(tags, this.items, provider);
     }
 
     @Override
@@ -390,17 +320,5 @@ public class ChargerBlockEntity<T extends ChargedMaterialModifier> extends BaseC
         tags.putInt("Charge", this.charge);
         tags.putInt("StructureLevel", this.structureLevel);
         return tags;
-    }
-
-    @Override
-    public void clearContent() {
-        this.items.clear();
-    }
-
-    @Override
-    public void fillStackedContents(StackedContents pContents) {
-        for (ItemStack stack : this.items) {
-            pContents.accountStack(stack);
-        }
     }
 }

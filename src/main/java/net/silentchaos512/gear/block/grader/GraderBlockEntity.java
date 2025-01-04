@@ -1,41 +1,32 @@
 package net.silentchaos512.gear.block.grader;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import net.minecraft.world.Container;
-import net.minecraft.world.ContainerHelper;
-import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.player.StackedContents;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
-import net.minecraft.world.inventory.StackedContentsCompatible;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.items.ItemStackHandler;
 import net.silentchaos512.gear.SilentGear;
 import net.silentchaos512.gear.api.part.MaterialGrade;
+import net.silentchaos512.gear.block.SgContainerBlockEntity;
 import net.silentchaos512.gear.gear.material.MaterialInstance;
-import net.silentchaos512.gear.setup.gear.MaterialModifiers;
 import net.silentchaos512.gear.setup.SgBlockEntities;
 import net.silentchaos512.gear.setup.SgTags;
+import net.silentchaos512.gear.setup.gear.MaterialModifiers;
 import net.silentchaos512.lib.util.EnumUtils;
 import net.silentchaos512.lib.util.InventoryUtils;
 import net.silentchaos512.lib.util.TimeUtils;
 
-import javax.annotation.Nullable;
 import java.util.stream.IntStream;
 
-public class GraderBlockEntity extends BaseContainerBlockEntity implements WorldlyContainer, StackedContentsCompatible {
+public class GraderBlockEntity extends SgContainerBlockEntity {
     static final int BASE_ANALYZE_TIME = TimeUtils.ticksFromSeconds(SilentGear.isDevBuild() ? 1 : 5);
 
     static final int INPUT_SLOT = 0;
@@ -45,10 +36,8 @@ public class GraderBlockEntity extends BaseContainerBlockEntity implements World
     static final int INVENTORY_SIZE = SLOTS_INPUT.length + SLOTS_OUTPUT.length;
     private static final int[] SLOTS_ALL = IntStream.rangeClosed(0, INVENTORY_SIZE - 1).toArray();
 
-    private NonNullList<ItemStack> items = NonNullList.withSize(INVENTORY_SIZE, ItemStack.EMPTY);
     private int progress = 0;
     private MaterialGrade lastGradeAttempt = MaterialGrade.NONE;
-    private boolean requireClientSync = false;
 
     private final ContainerData fields = new ContainerData() {
         @Override
@@ -124,51 +113,6 @@ public class GraderBlockEntity extends BaseContainerBlockEntity implements World
         }
     }
 
-    @Override
-    public int getContainerSize() {
-        return this.items.size();
-    }
-
-    @Override
-    public boolean isEmpty() {
-        return getInputStack().isEmpty();
-    }
-
-    @Override
-    public ItemStack getItem(int pSlot) {
-        return this.items.get(pSlot);
-    }
-
-    @Override
-    public ItemStack removeItem(int pSlot, int pAmount) {
-        return ContainerHelper.removeItem(this.items, pSlot, pAmount);
-    }
-
-    @Override
-    public ItemStack removeItemNoUpdate(int pSlot) {
-        return ContainerHelper.takeItem(this.items, pSlot);
-    }
-
-    @Override
-    public void setItem(int pSlot, ItemStack pStack) {
-        ItemStack itemstack = this.items.get(pSlot);
-        boolean flag = !pStack.isEmpty() && ItemStack.isSameItemSameComponents(itemstack, pStack);
-        this.items.set(pSlot, pStack);
-        if (pStack.getCount() > this.getMaxStackSize()) {
-            pStack.setCount(this.getMaxStackSize());
-        }
-
-        if (pSlot < INVENTORY_SIZE - 1 && !flag) {
-            this.progress = 0;
-            this.setChanged();
-        }
-    }
-
-    @Override
-    public boolean stillValid(Player pPlayer) {
-        return Container.stillValidBlockEntity(this, pPlayer);
-    }
-
     public static boolean canGrade(ItemStack stack) {
         var material = MaterialInstance.from(stack);
         if (material == null) return false;
@@ -210,10 +154,14 @@ public class GraderBlockEntity extends BaseContainerBlockEntity implements World
     }
 
     @Override
+    public void setChanged() {
+        this.progress = 0;
+        super.setChanged();
+    }
+
+    @Override
     protected void loadAdditional(CompoundTag pTag, HolderLookup.Provider pRegistries) {
         super.loadAdditional(pTag, pRegistries);
-        this.items = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
-        ContainerHelper.loadAllItems(pTag, this.items, pRegistries);
         this.progress = pTag.getInt("Progress");
     }
 
@@ -221,7 +169,6 @@ public class GraderBlockEntity extends BaseContainerBlockEntity implements World
     protected void saveAdditional(CompoundTag pTag, HolderLookup.Provider pRegistries) {
         super.saveAdditional(pTag, pRegistries);
         pTag.putInt("Progress", this.progress);
-        ContainerHelper.saveAllItems(pTag, this.items, pRegistries);
     }
 
     @Override
@@ -234,14 +181,10 @@ public class GraderBlockEntity extends BaseContainerBlockEntity implements World
         CompoundTag tags = super.getUpdateTag(pRegistries);
         tags.putInt("Progress", this.progress);
 
-        ListTag tagList = new ListTag();
         ItemStack input = getInputStack();
         if (!input.isEmpty()) {
-            CompoundTag itemTag = new CompoundTag();
-            itemTag.putByte("Slot", (byte) 0);
-            tagList.add(input.save(pRegistries, itemTag));
+            tags.put("input_item", input.save(pRegistries, new CompoundTag()));
         }
-        tags.put("Items", tagList);
         return tags;
     }
 
@@ -260,16 +203,6 @@ public class GraderBlockEntity extends BaseContainerBlockEntity implements World
         } else {
             setItem(INPUT_SLOT, ItemStack.EMPTY);
         }
-    }
-
-    @SuppressWarnings("AssignmentOrReturnOfFieldWithMutableType")
-    @Override
-    public int[] getSlotsForFace(Direction side) {
-        return switch (side) {
-            case UP -> SLOTS_INPUT;
-            case DOWN -> SLOTS_OUTPUT;
-            default -> SLOTS_ALL;
-        };
     }
 
     @Override
@@ -291,44 +224,29 @@ public class GraderBlockEntity extends BaseContainerBlockEntity implements World
     }
 
     @Override
-    public boolean canPlaceItemThroughFace(int index, ItemStack itemStackIn, @Nullable Direction direction) {
-        return canPlaceItem(index, itemStackIn);
-    }
-
-    @Override
-    public boolean canTakeItemThroughFace(int index, ItemStack stack, Direction direction) {
-        return index != INPUT_SLOT && index != CATALYST_SLOT;
-    }
-
-    @Override
     protected Component getDefaultName() {
         return Component.translatable("container.silentgear.material_grader");
     }
 
     @Override
-    protected NonNullList<ItemStack> getItems() {
-        return items;
-    }
+    public ItemStackHandler createItemHandler() {
+        return new ItemStackHandler(INVENTORY_SIZE) {
+            @Override
+            public boolean isItemValid(int slot, ItemStack stack) {
+                return (slot == INPUT_SLOT && canGrade(stack)) ||
+                        (slot == CATALYST_SLOT && getCatalystTier(stack) > 0);
+            }
 
-    @Override
-    protected void setItems(NonNullList<ItemStack> pItems) {
-        this.items = pItems;
+            @Override
+            public ItemStack extractItem(int slot, int amount, boolean simulate) {
+                if (slot == INPUT_SLOT || slot == CATALYST_SLOT) return ItemStack.EMPTY;
+                return super.extractItem(slot, amount, simulate);
+            }
+        };
     }
 
     @Override
     protected AbstractContainerMenu createMenu(int id, Inventory playerInventory) {
         return new GraderContainer(id, playerInventory, this, fields);
-    }
-
-    @Override
-    public void clearContent() {
-        this.items.clear();
-    }
-
-    @Override
-    public void fillStackedContents(StackedContents pContents) {
-        for (ItemStack stack : this.items) {
-            pContents.accountStack(stack);
-        }
     }
 }

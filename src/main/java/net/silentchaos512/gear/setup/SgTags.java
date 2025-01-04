@@ -138,6 +138,7 @@ public final class SgTags {
         public static final TagKey<Item> GRADER_CATALYSTS_TIER_3 = mod("grader_catalysts/tier3");
         public static final TagKey<Item> GRADER_CATALYSTS_TIER_4 = mod("grader_catalysts/tier4");
         public static final TagKey<Item> GRADER_CATALYSTS_TIER_5 = mod("grader_catalysts/tier5");
+        // TODO: We could replace all these tags with a data map someday
         public static final List<TagKey<Item>> GRADER_CATALYSTS_TIERS = ImmutableList.of(GRADER_CATALYSTS_TIER_1, GRADER_CATALYSTS_TIER_2, GRADER_CATALYSTS_TIER_3, GRADER_CATALYSTS_TIER_4, GRADER_CATALYSTS_TIER_5);
 
         public static final TagKey<Item> STARLIGHT_CHARGER_CATALYSTS = mod("starlight_charger_catalysts");
