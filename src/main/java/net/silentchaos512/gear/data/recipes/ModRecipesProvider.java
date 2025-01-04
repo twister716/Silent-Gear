@@ -311,7 +311,7 @@ public class ModRecipesProvider extends LibRecipeProvider {
         shapeless(RecipeCategory.MISC, SgItems.BINDING_BLUEPRINT)
                 .group("silentgear:blueprints/binding")
                 .requires(SgTags.Items.BLUEPRINT_PAPER)
-                .requires(Tags.Items.STRINGS)
+                .requires(Tags.Items.STRINGS, 2)
                 .unlockedBy("has_item", has(SgTags.Items.BLUEPRINT_PAPER))
                 .save(consumer, SilentGear.getId("binding_blueprint_alt"));
         shapeless(RecipeCategory.MISC, SgItems.BINDING_TEMPLATE)
