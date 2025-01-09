@@ -57,6 +57,8 @@ public final class Config {
         public static final ModConfigSpec.IntValue sawRecursionDepth;
         public static final ModConfigSpec.BooleanValue upgradesInAnvilOnly;
         public static final ModConfigSpec.BooleanValue destroySwappedParts;
+        // Traits
+        public static final ModConfigSpec.BooleanValue magnetPullDisabledOnCrouch;
         // Salvager
         public static final ModConfigSpec.DoubleValue salvagerMinLossRate;
         public static final ModConfigSpec.DoubleValue salvagerMaxLossRate;
@@ -239,6 +241,7 @@ public final class Config {
                     builder.push("statMultipliers");
 
                     // FIXME: Does not work, called too early
+                    // TODO: Maybe use a data map?
                     /*ItemStats.getRegistry().getValues().forEach(stat -> {
                         ResourceLocation name = Objects.requireNonNull(stat.getRegistryName());
                         String key = name.getNamespace() + "." + name.getPath();
@@ -250,6 +253,10 @@ public final class Config {
                 }
                 builder.pop();
             }
+
+            magnetPullDisabledOnCrouch = builder
+                    .comment("Disable magnetic pull effects when the player is crouching/sneaking.")
+                    .define("trait.item_magnet.disable_on_crouch", true);
 
             {
                 builder.comment("Settings for the material grader");

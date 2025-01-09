@@ -12,6 +12,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.silentchaos512.gear.Config;
 import net.silentchaos512.gear.api.traits.TraitActionContext;
 import net.silentchaos512.gear.api.traits.TraitEffect;
 import net.silentchaos512.gear.api.traits.TraitEffectType;
@@ -74,9 +75,13 @@ public class ItemMagnetTraitEffect extends TraitEffect {
     @Override
     public void onUpdate(TraitActionContext context, boolean isEquipped) {
         var player = context.player();
-        if (player == null || player.level().isClientSide) return;
+        if (!isEquipped || player == null || player.level().isClientSide || isCrouchDisabled(player)) return;
 
         tickMagnet(player, context.traitLevel());
+    }
+
+    private boolean isCrouchDisabled(Player player) {
+        return player.isCrouching() && Config.Common.magnetPullDisabledOnCrouch.get();
     }
 
     private boolean canAffectItem(ItemStack stack) {
