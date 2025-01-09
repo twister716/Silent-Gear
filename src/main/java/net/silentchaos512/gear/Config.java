@@ -42,7 +42,6 @@ public final class Config {
         public static final ModConfigSpec.DoubleValue graderStandardDeviation;
         public static final ModConfigSpec.IntValue prospectorHammerRange;
         public static final ModConfigSpec.DoubleValue repairFactorAnvil;
-        public static final ModConfigSpec.DoubleValue repairFactorQuick;
         public static final ModConfigSpec.IntValue repairKitVeryCrudeCapacity;
         public static final ModConfigSpec.IntValue repairKitCrudeCapacity;
         public static final ModConfigSpec.IntValue repairKitSturdyCapacity;
@@ -66,10 +65,7 @@ public final class Config {
         public static final ModConfigSpec.IntValue starlightChargerChargeRate;
         public static final ModConfigSpec.IntValue starlightChargerMaxCharge;
         // Debug
-        public static final ModConfigSpec.BooleanValue extraPartAndTraitLogging;
-        public static final ModConfigSpec.BooleanValue statsDebugLogging;
-        public static final ModConfigSpec.BooleanValue modelAndTextureLogging;
-        public static final ModConfigSpec.BooleanValue worldGenLogging;
+        public static final ModConfigSpec.BooleanValue propertiesDebugLogging;
         // Other
         public static final ModConfigSpec.BooleanValue showWipText;
 
@@ -84,17 +80,17 @@ public final class Config {
                     builder.push("blueprint");
                     blueprintTypes = builder
                             .comment("Allowed blueprint types. Valid values are: BOTH, BLUEPRINT, and TEMPLATE")
-                            .defineEnum("typesAllowed", BlueprintType.ConfigOption.BOTH);
+                            .defineEnum("types_allowed", BlueprintType.ConfigOption.BOTH);
                     spawnWithStarterBlueprints = builder
                             .comment("When joining a new world, should players be given a blueprint package?",
                                     "The blueprint package gives some blueprints when used (right-click).",
                                     "To change what is given, override the starter_blueprints loot table.")
-                            .define("spawnWithStarterBlueprints", true);
+                            .define("spawn_with_starter_blueprints", true);
                     builder.pop();
                 }
                 {
-                    builder.comment("Repair kit configs.");
-                    builder.push("repairKits");
+                    builder.comment("Repair kit configs");
+                    builder.push("repair_kits");
 
                     {
                         builder.comment("Capacity is the number of materials that can be stored (all types combined)",
@@ -132,16 +128,16 @@ public final class Config {
                 builder.comment("Settings for nerfed items.",
                         "You can give items reduced durability to encourage use of Silent Gear tools.",
                         "Changes require a restart!");
-                builder.push("nerfedItems");
+                builder.push("nerfed_items");
                 nerfedItemsEnabled = builder
                         .comment("Enable this feature. If false, the other settings in this group are ignored.")
                         .define("enabled", false);
                 nerfedItemDurabilityMulti = builder
                         .comment("Multiplies max durability by this value. If the result would be zero, a value of 1 is assigned.")
-                        .defineInRange("durabilityMultiplier", 0.05, 0, 1);
+                        .defineInRange("durability_multiplier", 0.05, 0, 1);
                 nerfedItemHarvestSpeedMulti = builder
                         .comment("Multiplies harvest speed by this value.")
-                        .defineInRange("harvestSpeedMultiplier", 0.5, 0, 1);
+                        .defineInRange("harvest_speed_multiplier", 0.5, 0, 1);
                 nerfedItems = builder
                         .comment("These items will have reduced durability")
                         .defineList("items", NerfedGear.DEFAULT_ITEMS, Config::isResourceLocation);
@@ -155,20 +151,20 @@ public final class Config {
                         .comment("If set to false all conversion recipes (type 'silentgear:conversion') will be disabled",
                                 "An example of a conversion recipe is placing a vanilla stone pickaxe into a crafting grid to make a Silent Gear stone pickaxe",
                                 "Note: This also affects conversion recipes added by data packs and other mods")
-                        .define("allowConversionRecipes", true);
+                        .define("allow_conversion_recipes", true);
 
                 sendGearBrokenMessage = builder
                         .comment("Displays a message in chat, notifying the player that an item broke and hinting that it can be repaired")
-                        .define("sendBrokenMessage", true);
+                        .define("send_broken_message", true);
 
                 damageFactorLevels = builder
-                        .comment("How frequently gear will recalcute stats as damaged",
-                                "Higher numbers will cause more recalculations, allowing traits to update stat values more often")
-                        .defineInRange("damageFactorLevels", 10, 1, Integer.MAX_VALUE);
+                        .comment("How frequently gear will recalculate properties as damaged",
+                                "Higher numbers will cause more recalculations, allowing traits to update property values more often")
+                        .defineInRange("damage_factor_levels", 10, 1, Integer.MAX_VALUE);
 
                 gearBreaksPermanently = builder
                         .comment("If true, gear breaks permanently, like vanilla tools and armor")
-                        .define("breaksPermanently", false);
+                        .define("breaks_permanently", false);
 
                 {
                     builder.push("enchanting");
@@ -176,11 +172,11 @@ public final class Config {
                             .comment("Allow gear items to be enchanted by normal means (enchanting table, etc.)",
                                     "There may still be other ways to obtain enchantments on gear items, depending on what other mods are installed.",
                                     "Enchantments will not be removed from gear items that have them.")
-                            .define("allowEnchanting", true);
+                            .define("allow_enchanting", true);
                     forceRemoveEnchantments = builder
                             .comment("Forcibly remove all enchantments from gear items. Enchantments added by traits will not be removed.",
-                                    "Enchantments will be removed during stat recalculations, so items not in a player's inventory will not be affected.")
-                            .define("forceRemoveEnchantments", false);
+                                    "Enchantments will be removed during property recalculations, so items not in a player's inventory will not be affected.")
+                            .define("force_remove_enchantments", false);
                     builder.pop();
                 }
                 {
@@ -195,7 +191,7 @@ public final class Config {
                     sawRecursionDepth = builder
                             .comment("Caps how far the saw can look for blocks when chopping down trees. Try decreasing this if you get stack overflow exceptions.",
                                     "Increasing this value is allowed, but not recommended unless you know what you are doing.")
-                            .defineInRange("recursionDepth", 200, 0, Integer.MAX_VALUE);
+                            .defineInRange("recursion_depth", 200, 0, Integer.MAX_VALUE);
                     builder.pop();
                 }
                 {
@@ -204,23 +200,20 @@ public final class Config {
                             "LOOSE: Break anything (you probably do not want this)",
                             "MODERATE: Break anything with the same harvest level",
                             "STRICT: Break only the exact same block");
-                    builder.push("aoeTool");
+                    builder.push("aoe_tool");
                     matchModeStandard = builder
                             .comment("Match mode for most blocks")
-                            .defineEnum("matchMode.standard", IAoeTool.MatchMode.MODERATE);
+                            .defineEnum("match_mode.standard", IAoeTool.MatchMode.MODERATE);
                     matchModeOres = builder
                             .comment("Match mode for ore blocks (anything in the forge:ores block tag)")
-                            .defineEnum("matchMode.ores", IAoeTool.MatchMode.STRICT);
+                            .defineEnum("match_mode.ores", IAoeTool.MatchMode.STRICT);
                     builder.pop();
                 }
                 {
                     builder.push("repairs");
                     repairFactorAnvil = builder
                             .comment("Effectiveness of gear repairs done in an anvil. Set to 0 to disable anvil repairs.")
-                            .defineInRange("anvilEffectiveness", 0.5, 0, 1);
-                    repairFactorQuick = builder
-                            .comment("DEPRECATED! Use repair kit configs instead.")
-                            .defineInRange("quickEffectiveness", 0.35, 0, 1);
+                            .defineInRange("anvil_effectiveness", 0.5, 0, 1);
 
                     builder.pop();
                 }
@@ -228,17 +221,17 @@ public final class Config {
                     builder.push("upgrades");
                     upgradesInAnvilOnly = builder
                             .comment("If true, upgrade parts may only be applied in an anvil.")
-                            .define("applyInAnvilOnly", false);
+                            .define("apply_in_anvil_only", false);
                     destroySwappedParts = builder
                             .comment("If true, parts that are replaced (swapped out) of a gear item are not returned to the player and are instead destroyed.")
                             .comment("This applies to the recipe where placing a gear item and a part into a crafting grid will swap out the part.")
-                            .define("destroySwappedParts", false);
+                            .define("destroy_swapped_parts", false);
                     builder.pop();
                 }
                 {
-                    builder.comment("Multipliers for stats on all gear. This allows the stats on all items to be increased or decreased",
+                    /*builder.comment("Multipliers for stats on all gear. This allows the stats on all items to be increased or decreased",
                             "without overriding every single file.");
-                    builder.push("statMultipliers");
+                    builder.push("stat_multipliers");*/
 
                     // FIXME: Does not work, called too early
                     // TODO: Maybe use a data map?
@@ -249,7 +242,7 @@ public final class Config {
                                 .defineInRange(key, 1, 0, Double.MAX_VALUE);
                         statMultipliers.put(stat, config);
                     });*/
-                    builder.pop();
+//                    builder.pop();
                 }
                 builder.pop();
             }
@@ -260,7 +253,7 @@ public final class Config {
 
             {
                 builder.comment("Settings for the material grader");
-                builder.push("materialGrader");
+                builder.push("material_grader");
                 graderMedianGrade = builder
                         .comment("The median (most common, average) grade that a material grader with tier 1 catalyst will produce.",
                                 "Higher tier catalysts will increase the median by one grade per tier past 1 (if 1 = C, 2 = B, etc.)")
@@ -270,7 +263,7 @@ public final class Config {
                                 "Grades are normally distributed, with the median grade being at the center of the bell curve.",
                                 "Larger numbers will make both higher and lower grades more common.",
                                 "Extremely large values may completely break the curve, yielding mostly the lowest and highest grades.")
-                        .defineInRange("standardDeviation", 1.5, 0.0, 100.0);
+                        .defineInRange("standard_deviation", 1.5, 0.0, 100.0);
                 builder.pop();
             }
 
@@ -280,49 +273,35 @@ public final class Config {
                 salvagerMinLossRate = builder
                         .comment("Minimum rate of part loss when salvaging items. 0 = no loss, 1 = complete loss.",
                                 "Rate depends on remaining durability.")
-                        .defineInRange("partLossRate.min", 0.0, 0, 1);
+                        .defineInRange("part_loss_rate.min", 0.0, 0, 1);
                 salvagerMaxLossRate = builder
                         .comment("Maximum rate of part loss when salvaging items. 0 = no loss, 1 = complete loss.",
                                 "Rate depends on remaining durability.")
-                        .defineInRange("partLossRate.max", 0.5, 0, 1);
+                        .defineInRange("part_loss_rate.max", 0.5, 0, 1);
                 builder.pop();
             }
 
             {
                 builder.comment("Settings for the starlight charger");
-                builder.push("starlightCharger");
+                builder.push("starlight_charger");
                 starlightChargerChargeRate = builder
                         .comment("The rate at which the starlight charger gathers energy during the night")
-                        .defineInRange("chargeRate", 50, 0, Integer.MAX_VALUE);
+                        .defineInRange("charge_rate", 100, 0, Integer.MAX_VALUE);
                 starlightChargerMaxCharge = builder
                         .comment("The maximum amount of energy the starlight charger can store")
-                        .defineInRange("maxCharge", 1_000_000, 0, Integer.MAX_VALUE);
+                        .defineInRange("max_charge", 1_000_000, 0, Integer.MAX_VALUE);
                 builder.pop();
             }
 
-            extraPartAndTraitLogging = builder
-                    .comment("Log additional information related to loading and synchronizing gear parts and traits.",
-                            "This might help track down more obscure issues.")
-                    .define("debug.logging.extraPartAndTraitInfo", false);
-
-            statsDebugLogging = builder
-                    .comment("Log stat calculations in the debug.log every time gear stats are recalculated")
-                    .define("debug.logging.stats", true);
-
-            modelAndTextureLogging = builder
-                    .comment("Log information on construction of gear and part models, as well as textures they attempt to load.",
-                            "This is intended to help find and fix rare issues that some users are experiencing.")
-                    .define("debug.logging.modelAndTexture", false);
-
-            worldGenLogging = builder
-                    .comment("Log details about certain features being adding to biomes and other world generator details")
-                    .define("debug.logging.worldGen", true);
+            propertiesDebugLogging = builder
+                    .comment("Log property calculations in the log file every time gear properties are recalculated")
+                    .define("debug.logging.properties", true);
 
             // Other random stuff
             showWipText = builder
                     .comment("Shows a \"WIP\" (work in progress) label in the tooltip of certain unfinished, but usable blocks and items")
                     .comment("Set to false to remove the text from tooltips")
-                    .define("other.showWipText", true);
+                    .define("other.show_wip_text", true);
 
             SPEC = builder.build();
         }
@@ -367,7 +346,6 @@ public final class Config {
         public static final ModConfigSpec.BooleanValue showMaterialTooltips;
         public static final ModConfigSpec.BooleanValue showPartTooltips;
         public static final ModConfigSpec.BooleanValue vanillaStyleTooltips;
-        public static final ModConfigSpec.BooleanValue showJeiHints;
 
         static {
             ModConfigSpec.Builder builder = new ModConfigSpec.Builder();
@@ -376,24 +354,19 @@ public final class Config {
                     .comment("Allow gear items to have the 'enchanted glow' effect. Set to 'false' to disable the effect.",
                             "The way vanilla handles the effect is bugged, and it is recommended to disable this until it can be fixed",
                             "The bug is not harmful and some like the way the overpowered effect looks")
-                    .define("gear.allowEnchantedEffect", false);
+                    .define("gear.allow_enchanted_effect", false);
 
             showMaterialTooltips = builder
                     .comment("Show SGear Material tooltips on items that can be used as materials.")
-                    .define("tooltip.showMaterialTooltips", true);
+                    .define("tooltip.show_material_tooltips", true);
 
             showPartTooltips = builder
                     .comment("Show tooltips on parts and items that can be used as parts.")
-                    .define("tooltip.showPartTooltips", true);
+                    .define("tooltip.show_part_tooltips", true);
 
             vanillaStyleTooltips = builder
                     .comment("Tooltips are replaced with a simpler variant similar to vanilla and contains about as much information.")
-                    .define("tooltip.vanillaStyleTooltips", false);
-
-            showJeiHints = builder
-                    .comment("Show tooltips on certain items (like blueprints) reminding the player of JEI functionality,",
-                            "or encouraging the player to install JEI (Just Enough Items) if the mod is missing.")
-                    .define("tooltip.jeiHints", true);
+                    .define("tooltip.vanilla_style_tooltips", false);
 
             SPEC = builder.build();
         }

@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Magnetic Upgrade, which is now the only way to obtain the Magnetic trait [#697, #726]
 - Configuration screen, accessible from the Mods menu
 - Config option to make crouching/sneaking disable item magnet effects (enabled by default)
+### Removed
+- Some of the unused config options
 ### Changed
 - All traits that previously had the Magnetic trait have had it removed
 ### Fixed
