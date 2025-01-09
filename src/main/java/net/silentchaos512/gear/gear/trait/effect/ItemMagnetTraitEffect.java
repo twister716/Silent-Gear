@@ -75,7 +75,7 @@ public class ItemMagnetTraitEffect extends TraitEffect {
     @Override
     public void onUpdate(TraitActionContext context, boolean isEquipped) {
         var player = context.player();
-        if (!isEquipped || player == null || player.level().isClientSide || isCrouchDisabled(player)) return;
+        if (!isEquipped || player == null || player.level().isClientSide) return;
 
         tickMagnet(player, context.traitLevel());
     }
@@ -95,7 +95,7 @@ public class ItemMagnetTraitEffect extends TraitEffect {
     }
 
     private void tickMagnet(Player player, int traitLevel) {
-        if (player.isCrouching()) return;
+        if (isCrouchDisabled(player)) return;
 
         final float range = this.effectRange * traitLevel + 1;
         Vec3 target = new Vec3(player.getX(), player.getY(0.5), player.getZ());

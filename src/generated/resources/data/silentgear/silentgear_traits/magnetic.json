@@ -3,7 +3,13 @@
   "description": {
     "translate": "trait.silentgear.magnetic.desc"
   },
-  "effects": [],
+  "effects": [
+    {
+      "type": "silentgear:item_magnet",
+      "effect_range": 3.0,
+      "pull_strength": 0.06
+    }
+  ],
   "extra_wiki_lines": [
     "Higher levels increase range"
   ],

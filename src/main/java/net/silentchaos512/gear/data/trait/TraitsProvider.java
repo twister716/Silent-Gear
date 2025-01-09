@@ -75,6 +75,13 @@ public class TraitsProvider extends TraitsProviderBase {
                 .withGearTypeCondition(GearTypes.HARVEST_TOOL)
                 .extraWikiLines("Smelted drops are not affected by fortune to prevent item duplication"));
         ret.add(TraitBuilder.of(Const.Traits.MAGNETIC, 5)
+                        .effects(
+                                new ItemMagnetTraitEffect(
+                                        0.06f,
+                                        3f,
+                                        Ingredient.EMPTY
+                                )
+                        )
                 .extraWikiLines("Higher levels increase range"));
         ret.add(TraitBuilder.of(Const.Traits.MULTI_BREAK, 5)
                 .extraWikiLines("  - This trait has never been coded ~~and has almost achieved meme status~~",

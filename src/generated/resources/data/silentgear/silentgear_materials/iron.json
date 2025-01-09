@@ -58,16 +58,6 @@
           "conditions": [],
           "level": 3,
           "trait": "silentgear:malleable"
-        },
-        {
-          "conditions": [
-            {
-              "type": "silentgear:material_ratio",
-              "ratio": 0.66
-            }
-          ],
-          "level": 1,
-          "trait": "silentgear:magnetic"
         }
       ]
     },
@@ -77,16 +67,6 @@
           "conditions": [],
           "level": 2,
           "trait": "silentgear:flexible"
-        },
-        {
-          "conditions": [
-            {
-              "type": "silentgear:material_ratio",
-              "ratio": 0.5
-            }
-          ],
-          "level": 3,
-          "trait": "silentgear:magnetic"
         }
       ]
     },

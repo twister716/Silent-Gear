@@ -394,10 +394,8 @@ public class MaterialsProvider extends MaterialsProviderBase {
                 .mainStatsProjectile(1.0f, 1.1f)
                 .mainStatsArmor(2, 6, 5, 2, 0, 6) //15
                 .trait(PartTypes.MAIN, Const.Traits.MALLEABLE, 3)
-                .trait(PartTypes.MAIN, Const.Traits.MAGNETIC, 1, new MaterialRatioTraitCondition(0.66f))
                 //rod
                 .trait(PartTypes.ROD, Const.Traits.FLEXIBLE, 2)
-                .trait(PartTypes.ROD, Const.Traits.MAGNETIC, 3, new MaterialRatioTraitCondition(0.5f))
                 //tip
                 .stat(PartTypes.TIP, GearProperties.DURABILITY, 128, NumberProperty.Operation.ADD)
                 .stat(PartTypes.TIP, GearProperties.ARMOR_DURABILITY, 4, NumberProperty.Operation.ADD)
@@ -1406,7 +1404,6 @@ public class MaterialsProvider extends MaterialsProviderBase {
                 .trait(PartTypes.MAIN, Const.Traits.MALLEABLE, 2)
                 .trait(PartTypes.MAIN, Const.Traits.HARD, 3)
                 .trait(PartTypes.ROD, Const.Traits.MALLEABLE, 2)
-                .trait(PartTypes.ROD, Const.Traits.MAGNETIC, 4, new MaterialRatioTraitCondition(0.5f))
         );
         // Electrum
         ret.add(extraMetal("electrum", 2, commonId("ingots/electrum"))
@@ -1668,7 +1665,6 @@ public class MaterialsProvider extends MaterialsProviderBase {
                 .trait(PartTypes.MAIN, Const.Traits.MALLEABLE, 4)
                 .trait(PartTypes.MAIN, Const.Traits.STELLAR, 1)
                 .trait(PartTypes.ROD, Const.Traits.MALLEABLE, 4)
-                .trait(PartTypes.ROD, Const.Traits.MAGNETIC, 3, new MaterialRatioTraitCondition(0.35f))
         );
         // Refined obsidian
         ret.add(extraMetal("refined_obsidian", 4, commonId("ingots/refined_obsidian"))
