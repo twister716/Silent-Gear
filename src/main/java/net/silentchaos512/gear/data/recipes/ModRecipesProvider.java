@@ -869,6 +869,17 @@ public class ModRecipesProvider extends LibRecipeProvider {
                 .unlockedBy("has_item", has(CraftingItems.FLAX_FLOWERS))
                 .save(consumer, SilentGear.getId("blue_dye_from_flax_flowers"));
 
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, CraftingItems.MAGNETIC_UPGRADE)
+                .pattern("i i")
+                .pattern("c c")
+                .pattern("#c/")
+                .define('i', Tags.Items.INGOTS_IRON)
+                .define('c', SgTags.Items.INGOTS_CRIMSON_STEEL)
+                .define('#', CraftingItems.ADVANCED_UPGRADE_BASE)
+                .define('/', Tags.Items.RODS_BREEZE)
+                .unlockedBy("has_item", has(SgTags.Items.INGOTS_CRIMSON_STEEL))
+                .save(consumer);
+
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, CraftingItems.ROAD_MAKER_UPGRADE)
                 .requires(CraftingItems.ADVANCED_UPGRADE_BASE)
                 .requires(Items.IRON_SHOVEL)

@@ -78,6 +78,10 @@ public final class PartsProvider extends PartsProviderBase {
             ret.add(addMainPartStats(builder));
         });
 
+        ret.add(upgradePart("misc/magnetic", CraftingItems.MAGNETIC_UPGRADE)
+                .upgradeGearTypes(GearTypeMatcher.ALL)
+                .property(GearProperties.TRAITS, TraitListPropertyValue.single(Const.Traits.MAGNETIC, 5))
+        );
         ret.add(upgradePart("misc/spoon", CraftingItems.SPOON_UPGRADE)
                 .upgradeGearTypes(GearTypes.PICKAXE.get().getMatcher(false))
                 .numberProperty(GearProperties.DURABILITY, 0.2f, NumberProperty.Operation.MULTIPLY_BASE)
