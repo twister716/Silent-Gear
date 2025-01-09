@@ -7,9 +7,12 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.level.Level;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.event.lifecycle.*;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
+import net.neoforged.neoforge.client.gui.ConfigurationScreen;
+import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.AddReloadListenerEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
@@ -166,7 +169,7 @@ class SideProxy implements IProxy {
     }
 
     static class Client extends SideProxy {
-        Client(IEventBus modEventBus) {
+        Client(IEventBus modEventBus, ModContainer container) {
             super(modEventBus);
 
             modEventBus.addListener(Client::clientSetup);
@@ -181,6 +184,8 @@ class SideProxy implements IProxy {
             if (SilentGear.isDevBuild()) {
                 //NeoForge.EVENT_BUS.register(new DebugOverlay());
             }
+
+            container.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
         }
 
         private static void clientSetup(FMLClientSetupEvent event) {
@@ -225,7 +230,7 @@ class SideProxy implements IProxy {
     }
 
     static class Server extends SideProxy {
-        Server(IEventBus modEventBus) {
+        Server(IEventBus modEventBus, ModContainer container) {
             super(modEventBus);
 
             modEventBus.addListener(this::serverSetup);

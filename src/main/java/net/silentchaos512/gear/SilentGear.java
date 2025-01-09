@@ -35,10 +35,10 @@ public final class SilentGear {
     public SilentGear(IEventBus modEventBus, ModContainer modContainer) {
         INSTANCE = this;
         PROXY = FMLEnvironment.dist == Dist.CLIENT
-                ? new SideProxy.Client(modEventBus)
-                : new SideProxy.Server(modEventBus);
+                ? new SideProxy.Client(modEventBus, modContainer)
+                : new SideProxy.Server(modEventBus, modContainer);
 
-        modContainer.registerConfig(ModConfig.Type.SERVER, Config.Common.SPEC);
+        modContainer.registerConfig(ModConfig.Type.COMMON, Config.Common.SPEC);
         modContainer.registerConfig(ModConfig.Type.CLIENT, Config.Client.SPEC);
 
         if (ModList.get().isLoaded("curios")) {
