@@ -65,7 +65,7 @@ public class GearPropertyMap implements Multimap<PropertyKey<?, ?>, GearProperty
             GearProperty<?, ?> property,
             boolean addModColors
     ) {
-        return property.formatModifiersUnchecked(mods, addModColors);
+        return property.formatModifiersUnchecked(mods, addModColors, GearProperty.FormatContext.ANY);
     }
 
     public static <T, V extends GearPropertyValue<T>, P extends GearProperty<T, V>> MutableComponent formatText(
@@ -85,7 +85,7 @@ public class GearPropertyMap implements Multimap<PropertyKey<?, ?>, GearProperty
         if (mods.size() == 1) {
             V inst = mods.iterator().next();
             int decimalPlaces = property.getPreferredDecimalPlaces(inst);
-            return property.formatValueWithColor(inst, addModColors);
+            return property.formatValueWithColor(inst, addModColors, GearProperty.FormatContext.ANY);
         }
 
         // Sort modifiers by operation
@@ -96,7 +96,7 @@ public class GearPropertyMap implements Multimap<PropertyKey<?, ?>, GearProperty
             if (!result.getSiblings().isEmpty()) {
                 result.append(", ");
             }
-            result.append(property.formatValueWithColor(inst, addModColors));
+            result.append(property.formatValueWithColor(inst, addModColors, GearProperty.FormatContext.ANY));
         }
 
         return result;

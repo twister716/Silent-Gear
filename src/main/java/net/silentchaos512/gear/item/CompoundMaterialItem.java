@@ -7,12 +7,14 @@ import net.minecraft.world.item.TooltipFlag;
 import net.silentchaos512.gear.SilentGear;
 import net.silentchaos512.gear.api.traits.TraitInstance;
 import net.silentchaos512.gear.api.util.PartGearKey;
+import net.silentchaos512.gear.api.util.PropertyKey;
 import net.silentchaos512.gear.client.util.ColorUtils;
 import net.silentchaos512.gear.client.util.TextListBuilder;
 import net.silentchaos512.gear.Config;
 import net.silentchaos512.gear.gear.material.AbstractMaterial;
 import net.silentchaos512.gear.gear.material.MaterialInstance;
 import net.silentchaos512.gear.setup.SgDataComponents;
+import net.silentchaos512.gear.setup.gear.GearProperties;
 import net.silentchaos512.gear.setup.gear.GearTypes;
 import net.silentchaos512.gear.setup.gear.PartTypes;
 import net.silentchaos512.gear.util.SynergyUtils;
@@ -85,16 +87,19 @@ public class CompoundMaterialItem extends Item implements IColoredMaterialItem {
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flagIn) {
         if (Config.Client.showMaterialTooltips.get()) {
-            List<MaterialInstance> materials = getSubMaterials(stack);
-            List<TraitInstance> traits = TraitHelper.getTraitsFromComponents(materials, PartGearKey.of(GearTypes.ALL, PartTypes.MAIN));
+            MaterialInstance material = MaterialInstance.from(stack);
+            if (material == null) return;
 
-            float synergy = SynergyUtils.getSynergy(PartTypes.MAIN.get(), materials, traits);
+            List<MaterialInstance> subMaterials = getSubMaterials(stack);
+            List<TraitInstance> traits = material.getProperty(PartTypes.MAIN, PropertyKey.of(GearProperties.TRAITS, GearTypes.ALL));
+
+            float synergy = SynergyUtils.getSynergy(PartTypes.MAIN.get(), subMaterials, traits);
             tooltip.add(SynergyUtils.getDisplayText(synergy));
 
             TextListBuilder statsBuilder = new TextListBuilder();
-            for (MaterialInstance material : materials) {
-                int nameColor = material.getNameColor(PartTypes.MAIN.get(), GearTypes.ALL.get());
-                statsBuilder.add(TextUtil.withColor(material.getDisplayName(PartTypes.MAIN.get()).copy(), nameColor));
+            for (MaterialInstance subMaterial : subMaterials) {
+                int nameColor = subMaterial.getNameColor(PartTypes.MAIN.get(), GearTypes.ALL.get());
+                statsBuilder.add(TextUtil.withColor(subMaterial.getDisplayName(PartTypes.MAIN.get()).copy(), nameColor));
             }
             tooltip.addAll(statsBuilder.build());
         }

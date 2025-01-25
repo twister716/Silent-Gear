@@ -1,25 +1,16 @@
 package net.silentchaos512.gear.util;
 
-import com.google.common.collect.ImmutableMap;
-import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.neoforged.fml.ModList;
-import net.neoforged.neoforge.common.NeoForge;
 import net.silentchaos512.gear.SilentGear;
-import net.silentchaos512.gear.api.event.GetTraitsEvent;
 import net.silentchaos512.gear.api.item.GearItem;
-import net.silentchaos512.gear.api.item.GearType;
-import net.silentchaos512.gear.api.part.PartList;
 import net.silentchaos512.gear.api.property.TraitListPropertyValue;
 import net.silentchaos512.gear.api.traits.*;
 import net.silentchaos512.gear.api.util.DataResource;
-import net.silentchaos512.gear.api.util.GearComponentInstance;
-import net.silentchaos512.gear.api.util.PartGearKey;
 import net.silentchaos512.gear.compat.curios.CuriosCompat;
-import net.silentchaos512.gear.gear.part.PartInstance;
 import net.silentchaos512.gear.gear.trait.Trait;
 import net.silentchaos512.gear.setup.gear.GearProperties;
 
@@ -195,77 +186,7 @@ public final class TraitHelper {
         return Collections.emptyList();
     }
 
-    /**
-     * Gets a Map of Traits and levels from the parts, used to calculate trait levels and should not
-     * be used in most cases. Consider using {@link #getTraitLevel(ItemStack, DataResource)} when
-     * appropriate.
-     *
-     * @param gear     The item
-     * @param gearType The gear type
-     * @param parts    The list of all parts used in constructing the gear.
-     * @return A Map of Traits to their levels
-     */
-    public static Map<Trait, Integer> getTraitsFromParts(ItemStack gear, GearType gearType, PartList parts) {
-        if (parts.isEmpty() || (!gear.isEmpty() && GearHelper.isBroken(gear)))
-            return ImmutableMap.of();
-
-        Map<Trait, Integer> result = new LinkedHashMap<>();
-
-        for (PartInstance part : parts) {
-            PartGearKey key = PartGearKey.of(gearType, part);
-            for (TraitInstance inst : part.getTraits(key)) {
-                if (inst.conditionsMatch(key, parts)) {
-                    Trait trait = inst.getTrait();
-                    // Get the highest value in any part
-                    result.merge(trait, inst.getLevel(), Integer::max);
-                }
-            }
-        }
-
-        Trait[] keys = result.keySet().toArray(new Trait[0]);
-
-        cancelTraits(result, keys);
-        NeoForge.EVENT_BUS.post(new GetTraitsEvent(gear, parts, result));
-        return result;
-    }
-
-    @Deprecated
-    public static List<TraitInstance> getTraitsFromComponents(List<? extends GearComponentInstance<?>> components, PartGearKey partKey) {
-        if (components.isEmpty()) {
-            return Collections.emptyList();
-        }
-
-        Map<Trait, Integer> map = new LinkedHashMap<>();
-        Map<Trait, Integer> countMatsWithTrait = new HashMap<>();
-
-        for (GearComponentInstance<?> comp : components) {
-            for (TraitInstance inst : comp.getTraits(partKey)) {
-                if (inst.conditionsMatch(partKey, components)) {
-                    map.merge(inst.getTrait(), inst.getLevel(), Integer::sum);
-                    countMatsWithTrait.merge(inst.getTrait(), 1, Integer::sum);
-                }
-            }
-        }
-
-        Trait[] keys = map.keySet().toArray(new Trait[0]);
-
-        for (Trait trait : keys) {
-            final int matsWithTrait = countMatsWithTrait.get(trait);
-            final float divisor = Math.max(components.size() / 2f, matsWithTrait);
-            final int value = Math.round(map.get(trait) / divisor);
-            map.put(trait, Mth.clamp(value, 1, trait.getMaxLevel()));
-        }
-
-        cancelTraits(map, keys);
-        // FIXME
-//        MinecraftForge.EVENT_BUS.post(new GetTraitsEvent(gear, materials, result));
-
-        List<TraitInstance> ret = new ArrayList<>();
-        map.forEach((trait, level) -> ret.add(TraitInstance.of(trait, level)));
-        return ret;
-    }
-
-    private static void cancelTraits(Map<Trait, Integer> mapToModify, Trait[] keys) {
+    public static void cancelTraits(Map<Trait, Integer> mapToModify, Trait[] keys) {
         /*for (int i = 0; i < keys.length; ++i) {
             Trait t1 = keys[i];
 

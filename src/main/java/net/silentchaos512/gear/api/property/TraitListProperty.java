@@ -101,8 +101,8 @@ public class TraitListProperty extends GearProperty<List<TraitInstance>, TraitLi
 
         List<TraitInstance> ret = new ArrayList<>();
         map.forEach((trait, level) -> ret.add(TraitInstance.of(trait, level)));
-        // Remove if the conditions don't match the gear
         if (filterConditions) {
+            // Remove if the conditions don't match the gear
             ret.removeIf(trait -> !trait.conditionsMatch(PartGearKey.of(itemType, PartTypes.NONE.get()), parts));
         }
         return ret;
@@ -124,15 +124,15 @@ public class TraitListProperty extends GearProperty<List<TraitInstance>, TraitLi
     }
 
     @Override
-    public MutableComponent formatValueWithColor(TraitListPropertyValue value, boolean addColor) {
-        return formatValue(value).plainCopy();
+    public MutableComponent formatValueWithColor(TraitListPropertyValue value, boolean addColor, FormatContext formatContext) {
+        return formatValue(value, formatContext).plainCopy();
     }
 
     @Override
-    public Component formatValue(TraitListPropertyValue value) {
+    public Component formatValue(TraitListPropertyValue value, FormatContext formatContext) {
         return Component.literal(
                 value.value.stream()
-                        .map(TraitInstance::getDisplayName)
+                        .map(traitInstance -> traitInstance.getDisplayName(formatContext))
                         .map(Component::getString)
                         .collect(Collectors.joining(", "))
         );

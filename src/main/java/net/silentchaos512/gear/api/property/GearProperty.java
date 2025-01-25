@@ -136,7 +136,7 @@ public abstract class GearProperty<T, V extends GearPropertyValue<T>> {
     }
 
     public Component formatText(V value, GearTooltipFlag flag) {
-        var valueText = formatValue(value);
+        var valueText = formatValue(value, FormatContext.GEAR);
         return formatText(valueText);
     }
 
@@ -145,20 +145,20 @@ public abstract class GearProperty<T, V extends GearPropertyValue<T>> {
         return Component.translatable("property.silentgear.displayFormat", propertyName, valueText);
     }
 
-    public abstract Component formatValue(V value);
+    public abstract Component formatValue(V value, FormatContext formatContext);
 
-    public abstract MutableComponent formatValueWithColor(V value, boolean addColor);
+    public abstract MutableComponent formatValueWithColor(V value, boolean addColor, FormatContext formatContext);
 
     @SuppressWarnings("unchecked")
-    public Component formatModifiersUnchecked(Collection<? extends GearPropertyValue<?>> mods, boolean addModColors) {
-        return formatModifiers((Collection<V>) mods, addModColors);
+    public Component formatModifiersUnchecked(Collection<? extends GearPropertyValue<?>> mods, boolean addModColors, FormatContext formatContext) {
+        return formatModifiers((Collection<V>) mods, addModColors, formatContext);
     }
 
-    public Component formatModifiers(Collection<V> mods, boolean addModColors) {
+    public Component formatModifiers(Collection<V> mods, boolean addModColors, FormatContext formatContext) {
         if (mods.size() == 1) {
             V inst = mods.iterator().next();
             int decimalPlaces = getPreferredDecimalPlaces(inst);
-            return formatValueWithColor(inst, addModColors);
+            return formatValueWithColor(inst, addModColors, formatContext);
         }
 
         // Sort modifiers by operation
@@ -169,7 +169,7 @@ public abstract class GearProperty<T, V extends GearPropertyValue<T>> {
             if (!result.getSiblings().isEmpty()) {
                 result.append(", ");
             }
-            result.append(formatValueWithColor(value, addModColors));
+            result.append(formatValueWithColor(value, addModColors, formatContext));
         }
 
         return result;
@@ -177,11 +177,11 @@ public abstract class GearProperty<T, V extends GearPropertyValue<T>> {
 
     public MutableComponent formatModifiersWithColorUnchecked(
             Collection<GearPropertyValue<?>> mods,
-            boolean addColor
-    ) {
+            boolean addColor,
+            FormatContext formatContext) {
         //noinspection unchecked
         V value = valueOf(compute((Collection<V>) mods));
-        return formatValueWithColor(value, addColor);
+        return formatValueWithColor(value, addColor, formatContext);
     }
 
     public int getPreferredDecimalPlaces(V value) {
@@ -213,6 +213,13 @@ public abstract class GearProperty<T, V extends GearPropertyValue<T>> {
     public int hashCode() {
         var key = SgRegistries.GEAR_PROPERTY.getKey(this);
         return key != null ? key.hashCode() : super.hashCode();
+    }
+
+    public enum FormatContext {
+        GEAR,
+        PART,
+        MATERIAL,
+        ANY
     }
 
     public static class Builder<T> {

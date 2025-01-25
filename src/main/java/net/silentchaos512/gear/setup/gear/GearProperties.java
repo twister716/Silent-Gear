@@ -85,7 +85,7 @@ public class GearProperties {
             () -> new NumberProperty(
                     NumberProperty.Operation.AVERAGE,
                     NumberProperty.DisplayFormat.UNIT,
-                    true,
+                    false,
                     new GearProperty.Builder<>(0f, 0f, 0f, (float) Integer.MAX_VALUE)
                             .group(GearPropertyGroups.GENERAL)
                             .affectedByGrades(false)

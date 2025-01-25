@@ -11,6 +11,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 import net.silentchaos512.gear.api.item.GearItem;
 import net.silentchaos512.gear.api.part.PartList;
+import net.silentchaos512.gear.api.property.GearProperty;
 import net.silentchaos512.gear.api.property.GearPropertyMap;
 import net.silentchaos512.gear.api.property.GearPropertyValue;
 import net.silentchaos512.gear.api.util.PropertyKey;
@@ -70,7 +71,7 @@ public final class PropertiesCommand {
                 Component name = TextUtil.withColor(property.getDisplayName(), property.getGroup().getColor());
                 Component modsText = GearPropertyMap.formatTextUnchecked(mods, property, true);
                 Component valueText = TextUtil.withColor(
-                        property.formatModifiersWithColorUnchecked(mods, true),
+                        property.formatModifiersWithColorUnchecked(mods, true, GearProperty.FormatContext.GEAR),
                         ChatFormatting.YELLOW
                 );
 

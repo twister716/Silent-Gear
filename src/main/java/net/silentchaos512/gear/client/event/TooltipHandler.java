@@ -134,8 +134,6 @@ public final class TooltipHandler {
                 PartType partType = partTypes.get(index);
                 event.getToolTip().add(buildPartTypeHeader(partTypes, partType));
 
-                getMaterialTraitLines(event, partType, material);
-
                 event.getToolTip().add(Component.translatable("misc.silentgear.tooltip.properties").withStyle(ChatFormatting.GOLD));
                 getMaterialStatLines(event, partType, material);
             }
@@ -271,36 +269,6 @@ public final class TooltipHandler {
         for (IMaterialModifier modifier : material.getModifiers()) {
             modifier.appendTooltip(event.getToolTip());
         }
-    }
-
-    private static void getMaterialTraitLines(ItemTooltipEvent event, PartType partType, MaterialInstance material) {
-        Collection<TraitInstance> traits = material.getTraits(PartGearKey.ofAll(partType));
-        if (traits.isEmpty()) return;
-
-        MutableComponent header = TextUtil.misc("tooltip.traits").withStyle(ChatFormatting.GOLD);
-        if (!KeyTracker.isDisplayTraitsDown()) {
-            MutableComponent keyHint = TextUtil.withColor(TextUtil.keyBinding(KeyTracker.DISPLAY_TRAITS), Color.AQUAMARINE);
-            header.append(" ").append(keyHint);
-        }
-        event.getToolTip().add(header);
-
-        TextListBuilder builder = new TextListBuilder();
-
-        for (TraitInstance trait : traits) {
-            builder.add(trait.getDisplayName());
-
-            // Trait description and conditions
-            if (event.getFlags().isAdvanced() || KeyTracker.isDisplayTraitsDown()) {
-                builder.indent();
-                builder.add(trait.getTrait().getDescription(trait.getLevel()).withStyle(ChatFormatting.DARK_GRAY));
-                if (!trait.getConditions().isEmpty()) {
-                    builder.add(TextUtil.withColor(trait.getConditionsText(), ChatFormatting.DARK_GRAY));
-                }
-                builder.unindent();
-            }
-        }
-
-        event.getToolTip().addAll(builder.build());
     }
 
     private static void getPartStatLines(ItemTooltipEvent event, PartInstance part) {

@@ -11,6 +11,7 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.item.TooltipFlag;
+import net.silentchaos512.gear.api.property.GearProperty;
 import net.silentchaos512.gear.api.util.DataResource;
 import net.silentchaos512.gear.api.util.GearComponentInstance;
 import net.silentchaos512.gear.api.util.PartGearKey;
@@ -82,8 +83,12 @@ public final class TraitInstance {
     }
 
     public MutableComponent getDisplayName() {
+        return getDisplayName(GearProperty.FormatContext.ANY);
+    }
+
+    public MutableComponent getDisplayName(GearProperty.FormatContext formatContext) {
         MutableComponent text = this.trait.get().getDisplayName(this.level).copy();
-        if (!conditions.isEmpty()) {
+        if (formatContext != GearProperty.FormatContext.GEAR && !conditions.isEmpty()) {
             text.append("*");
         }
         return text;

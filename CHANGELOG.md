@@ -3,6 +3,11 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.21.1-4.0.12] - 2025-01-25
+### Fixed
+- Part names not translating in some cases (kylev) [#767]
+- Compound materials (alloys) not retaining all properties [#747, #736]
+
 ## [1.21.1-4.0.11] - 2025-01-09
 ### Added
 - Magnetic Upgrade, which is now the only way to obtain the Magnetic trait [#697, #726]

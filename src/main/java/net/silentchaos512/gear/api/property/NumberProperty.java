@@ -215,7 +215,7 @@ public class NumberProperty extends GearProperty<Float, NumberPropertyValue> {
     }
 
     @Override
-    public MutableComponent formatValueWithColor(NumberPropertyValue value, boolean addColor) {
+    public MutableComponent formatValueWithColor(NumberPropertyValue value, boolean addColor, FormatContext formatContext) {
         return value.operation().formatNumberValue(this, value.value, getPreferredDecimalPlaces(value), addColor);
     }
 
@@ -233,7 +233,7 @@ public class NumberProperty extends GearProperty<Float, NumberPropertyValue> {
     }
 
     @Override
-    public Component formatValue(NumberPropertyValue value) {
+    public Component formatValue(NumberPropertyValue value, FormatContext formatContext) {
         return value.operation().formatNumberValue(this, value.value, getPreferredDecimalPlaces(value), false);
     }
 

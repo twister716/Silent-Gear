@@ -3,9 +3,7 @@
   "parent": "silentgear:empty",
   "crafting": {
     "can_salvage": true,
-    "categories": [
-      "gem"
-    ],
+    "categories": [],
     "gear_type_blacklist": [],
     "ingredient": {
       "item": "silentgear:super_alloy"

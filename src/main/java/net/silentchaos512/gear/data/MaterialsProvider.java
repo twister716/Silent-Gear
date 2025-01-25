@@ -1865,7 +1865,7 @@ public class MaterialsProvider extends MaterialsProviderBase {
     @SuppressWarnings("WeakerAccess")
     protected MaterialBuilder<CompoundMaterial> compoundBuilder(DataResource<Material> material, ItemLike item) {
         return new MaterialBuilder<>(material.getId(), (parent, crafting, display, __) -> new CompoundMaterial(parent, crafting, display))
-                .crafting(item, MaterialCategories.GEM);
+                .crafting(item);
     }
 
     @SuppressWarnings("WeakerAccess")
