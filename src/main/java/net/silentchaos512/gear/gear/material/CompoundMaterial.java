@@ -144,15 +144,18 @@ public class CompoundMaterial extends AbstractMaterial {
         // Synergy
         final var modifiersWithSynergy = new ArrayList<V>();
         if (key.property().isAffectedBySynergy()) {
+            // Synergy modifications
             final float synergy = SynergyUtils.getSynergy(partType, new ArrayList<>(subMaterials), material.getTraits(partGearKey));
             if (!MathUtils.floatsEqual(synergy, 1.0f)) {
                 for (var mod : compressedModifiers) {
                     modifiersWithSynergy.add(key.property().applySynergy(mod, synergy));
                 }
             }
+            return modifiersWithSynergy;
+        } else {
+            // No synergy effects
+            return compressedModifiers;
         }
-
-        return modifiersWithSynergy;
     }
 
     @Override
