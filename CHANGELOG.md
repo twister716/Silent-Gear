@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated Japanese translation (twister716) [#750]
 - Rods can no longer be salvaged into materials, since they can't return an appropriate amount of material
 ### Fixed
+- Unbound keys causing log spam [#782]
 - Stackable gear items being salvageable [#779]
 - Allow salvager to keep running even when output isn't empty (kylev) [#768]
 

@@ -156,6 +156,9 @@ public class KeyTracker {
     }
 
     public static boolean isKeyDown(int keycode) {
+        // Guard against unbound keys
+        if (keycode < 0) return false;
+
         long h = Minecraft.getInstance().getWindow().getWindow();
         return InputConstants.isKeyDown(h, keycode);
     }
