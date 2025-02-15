@@ -82,20 +82,18 @@ public class SalvagingRecipe implements Recipe<SingleRecipeInput> {
     }
 
     /**
-     * Salvages parts into their respective material items, or fragments if appropriate. This does
-     * not necessarily give back the original item used for the material, but an item that matches
-     * it.
+     * Salvages parts into their respective material items. This may not necessarily give back the original item used
+     * for the material, but an item that matches it.
      *
      * @param part The part
      * @return The list of items to return
      */
     public static List<ItemStack> salvagePart(PartInstance part) {
         ItemStack partStack = part.getItem();
-        if (part.isValid() && part.get() instanceof CoreGearPart && partStack.getItem() instanceof CompoundPartItem compoundPartItem) {
+        if (canSalvagePart(part, partStack)) {
             List<MaterialInstance> materialsInPart = CompoundPartItem.getMaterials(partStack);
-            int craftedCount = materialsInPart.size();
-            if (craftedCount < 1) {
-                SilentGear.LOGGER.warn("Compound part's crafted count is less than 1? {}", partStack);
+            if (materialsInPart.isEmpty()) {
+                SilentGear.LOGGER.warn("Compound part contains no materials? {}", partStack);
                 return List.of(partStack);
             }
 
@@ -108,6 +106,13 @@ public class SalvagingRecipe implements Recipe<SingleRecipeInput> {
             return result;
         }
         return List.of(partStack);
+    }
+
+    private static boolean canSalvagePart(PartInstance part, ItemStack partStack) {
+        return part.isValid()
+                && part.get() instanceof CoreGearPart
+                && partStack.getItem() instanceof CompoundPartItem
+                && part.getItem().getMaxStackSize() == 1;
     }
 
     public static class Serializer implements RecipeSerializer<SalvagingRecipe> {

@@ -61,6 +61,7 @@ public final class Config {
         // Salvager
         public static final ModConfigSpec.DoubleValue salvagerMinLossRate;
         public static final ModConfigSpec.DoubleValue salvagerMaxLossRate;
+        public static final ModConfigSpec.BooleanValue salvagerBreakDownPartsWithGear;
         // Starlight Charger
         public static final ModConfigSpec.IntValue starlightChargerChargeRate;
         public static final ModConfigSpec.IntValue starlightChargerMaxCharge;
@@ -278,6 +279,10 @@ public final class Config {
                         .comment("Maximum rate of part loss when salvaging items. 0 = no loss, 1 = complete loss.",
                                 "Rate depends on remaining durability.")
                         .defineInRange("part_loss_rate.max", 0.5, 0, 1);
+                salvagerBreakDownPartsWithGear = builder
+                        .comment("If enabled, the salvager will automatically break down any parts returned by a gear item into their component materials.",
+                                "Otherwise, the parts are returned and can be optionally salvaged individually.")
+                        .define("break_down_parts_with_gear", false);
                 builder.pop();
             }
 
@@ -306,7 +311,8 @@ public final class Config {
             SPEC = builder.build();
         }
 
-        private Common() {}
+        private Common() {
+        }
 
         public static boolean isLoaded() {
             return SPEC.isLoaded();
@@ -371,10 +377,12 @@ public final class Config {
             SPEC = builder.build();
         }
 
-        private Client() {}
+        private Client() {
+        }
     }
 
-    private Config() {}
+    private Config() {
+    }
 
     @SubscribeEvent
     public static void onLoad(final ModConfigEvent event) {

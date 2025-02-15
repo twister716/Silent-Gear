@@ -10,6 +10,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.level.Level;
+import net.silentchaos512.gear.Config;
 import net.silentchaos512.gear.api.part.PartList;
 import net.silentchaos512.gear.gear.part.PartInstance;
 import net.silentchaos512.gear.setup.SgRecipes;
@@ -40,12 +41,16 @@ public class GearSalvagingRecipe extends SalvagingRecipe {
         if (input.getMaxStackSize() > 1) {
             return List.of();
         }
-        List<ItemStack> ret = new ArrayList<>();
 
+        List<ItemStack> ret = new ArrayList<>();
         PartList parts = GearData.getConstruction(input).parts();
+
         for (PartInstance part : parts) {
-            ret.add(part.getItem());
-            //ret.addAll(salvage(part));
+            if (Config.Common.salvagerBreakDownPartsWithGear.get()) {
+                ret.addAll(salvagePart(part));
+            } else {
+                ret.add(part.getItem());
+            }
         }
 
         return ret;

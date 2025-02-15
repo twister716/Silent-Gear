@@ -6,8 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Added
 - PartMaterialIngredient can now exclude specific material categories (JaisDK) [#780]
+- Config option to make the salvager automatically break down parts into materials
 ### Changed
 - Updated Japanese translation (twister716) [#750]
+- Rods can no longer be salvaged into materials, since they can't return an appropriate amount of material
 ### Fixed
 - Stackable gear items being salvageable [#779]
 - Allow salvager to keep running even when output isn't empty (kylev) [#768]

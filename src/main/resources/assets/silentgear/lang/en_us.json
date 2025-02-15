@@ -175,6 +175,7 @@
   "command.silentgear.traits.maxLevel": "Max Level: %d",
   "command.silentgear.traits.traitNotFound": "Trait does not exist",
   "silentgear.configuration.allow_enchanted_effect": "Allow Enchanted Effect",
+  "silentgear.configuration.break_down_parts_with_gear": "Break Down Parts With Gear",
   "silentgear.configuration.allow_enchanting": "Allow Enchanting",
   "silentgear.configuration.anvil_effectiveness": "Anvil Effectiveness",
   "silentgear.configuration.aoe_tool": "AOE Tool",
