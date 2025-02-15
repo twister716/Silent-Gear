@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Updated Japanese translation (twister716) [#750]
 ### Fixed
+- Stackable gear items being salvageable [#779]
 - Allow salvager to keep running even when output isn't empty (kylev) [#768]
 
 ## [1.21.1-4.0.12] - 2025-01-25

@@ -8,6 +8,8 @@ import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.SingleRecipeInput;
+import net.minecraft.world.level.Level;
 import net.silentchaos512.gear.api.part.PartList;
 import net.silentchaos512.gear.gear.part.PartInstance;
 import net.silentchaos512.gear.setup.SgRecipes;
@@ -23,8 +25,21 @@ public class GearSalvagingRecipe extends SalvagingRecipe {
     }
 
     @Override
+    public boolean matches(SingleRecipeInput input, Level worldIn) {
+        // Block salvaging of stackable items like arrows
+        if (input.getItem(0).getMaxStackSize() > 1) {
+            return false;
+        }
+        return super.matches(input, worldIn);
+    }
+
+    @Override
     public List<ItemStack> getPossibleResults(Container inv) {
         ItemStack input = inv.getItem(0);
+        // Block salvaging of stackable items like arrows
+        if (input.getMaxStackSize() > 1) {
+            return List.of();
+        }
         List<ItemStack> ret = new ArrayList<>();
 
         PartList parts = GearData.getConstruction(input).parts();

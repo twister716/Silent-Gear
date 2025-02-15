@@ -1673,6 +1673,8 @@ public class ModRecipesProvider extends LibRecipeProvider {
     }
 
     private static void gearSalvage(RecipeOutput consumer, GearItem item) {
+        if (item == GearItemSets.ARROW.gearItem()) return;
+
         SalvagingRecipeBuilder.gearBuilder(item)
                 .save(consumer, SilentGear.getId("salvaging/gear/" + NameUtils.fromItem(item).getPath()));
     }
