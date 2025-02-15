@@ -108,7 +108,7 @@ public class KeyTracker {
         if (currentScreen instanceof AbstractContainerScreen<?> containerScreen) {
             Slot slot = containerScreen.getSlotUnderMouse();
             if (slot != null) {
-                return slot.getSlotIndex();
+                return slot.getContainerSlot();
             }
         }
         return -1;
